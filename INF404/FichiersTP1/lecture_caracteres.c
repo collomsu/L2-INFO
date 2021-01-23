@@ -1,0 +1,1 @@
+../../../FichiersInitiaux/lecture_caracteres.c
