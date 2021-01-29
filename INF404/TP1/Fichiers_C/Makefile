@@ -3,7 +3,7 @@ CC=gcc
 all: calculette test_lexeme
 
 calculette: calculette.o analyse_syntaxique.o
-	$(CC) -g -Wall -o calculette calculette.o analyse_syntaxique.o
+	$(CC) -g -Wall -o calculette calculette.o analyse_syntaxique.o analyse_lexicale.o lecture_caracteres.o
 
 test_lexeme: analyse_lexicale.o  lecture_caracteres.o  test_lexeme.o
 	$(CC) -g -Wall -o test_lexeme analyse_lexicale.o  lecture_caracteres.o  test_lexeme.o
