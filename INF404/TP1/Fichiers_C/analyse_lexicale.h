@@ -1,3 +1,6 @@
+#ifndef ANALYSE_LEXICALE_H
+#define ANALYSE_LEXICALE_H
+
 /* ------------------------------------------------------------------------
 -- paquetage machine_lexemes
 --
@@ -11,27 +14,28 @@
 
    typedef enum {
 	  ERREUR_CAR,   // caractere incorrect
-	  CHIFFRE,			// chiffre 
+	  CHIFFRE,			// chiffre
 	  SYMBOLE,			// symbole,
-      C_FIN_SEQUENCE   // caractere de fin de sequence     
+      C_FIN_SEQUENCE   // caractere de fin de sequence
    } Nature_Caractere ;
 
-   typedef enum { 
+   typedef enum {
       ENTIER,           // sequence de chiffres
       PLUS,             // +
       MOINS,            // -
       MUL,              // *
+      DIV,              // /
       FIN_SEQUENCE,     // pseudo lexeme ajoute en fin de sequence
     } Nature_Lexeme ;
 
 
-   typedef struct { 
+   typedef struct {
       Nature_Lexeme nature;    // nature du lexeme
       unsigned int ligne;           // numero de ligne
       unsigned int colonne;         // numero de colonne
       char chaine[256];           // chaine de caracteres
       int valeur;          // valeur d'un entier
-   } Lexeme ; 
+   } Lexeme ;
 
    void afficher(Lexeme l);
 
@@ -69,3 +73,5 @@
    void arreter();
    // e.i. : la machine sequentielle est demarree
    // e.f. : la machine sequentielle est arretee
+
+#endif

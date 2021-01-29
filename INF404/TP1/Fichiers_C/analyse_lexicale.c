@@ -14,8 +14,8 @@
 ------------------------------------------------------------------------ */
 
 #include <string.h>
-#include <stdlib.h> 
-#include <stdio.h> 
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "lecture_caracteres.h"
 #include "analyse_lexicale.h"
@@ -45,13 +45,13 @@
 
    void avancer() {
       reconnaitre_lexeme();
-   } 
+   }
 
    /* --------------------------------------------------------------------- */
 
    Lexeme lexeme_courant() {
       return lexeme_en_cours;
-   } 
+   }
 
    /* --------------------------------------------------------------------- */
 
@@ -69,11 +69,11 @@
 
 
    // reconnaissance d'un nouveau lexeme
-   // etat initial : le caractere courant est soit separateur 
+   // etat initial : le caractere courant est soit separateur
    //                soit le 1er caractere d'un lexeme
-   // etat final : 
+   // etat final :
    //       - un nouveau lexeme est reconnu dans lexeme_en_cours
-   //       - le caractere courant est soit la fin de fichier, 
+   //       - le caractere courant est soit la fin de fichier,
    //		soit un separateur,  soit le 1er caractere d'un lexeme
 
    void reconnaitre_lexeme() {
@@ -97,13 +97,13 @@
 
 			switch(nature_caractere(caractere_courant())) {
 
-				case C_FIN_SEQUENCE: 
+				case C_FIN_SEQUENCE:
              		lexeme_en_cours.nature = FIN_SEQUENCE;
                 	etat = E_FIN;
 					break ;
 
 
-				case CHIFFRE: 
+				case CHIFFRE:
 		     		lexeme_en_cours.nature = ENTIER;
                 	lexeme_en_cours.ligne = numero_ligne();
                 	lexeme_en_cours.colonne = numero_colonne();
@@ -113,7 +113,7 @@
 		   			avancer_car() ;
 					break ;
 
-				case SYMBOLE: 
+				case SYMBOLE:
 		       		lexeme_en_cours.ligne = numero_ligne();
                		lexeme_en_cours.colonne = numero_colonne();
 		       		ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
@@ -128,6 +128,10 @@
 			   			break;
                		  case '*':
                			lexeme_en_cours.nature = MUL;
+               			etat = E_FIN;
+              break;
+               		  case '/':
+               			lexeme_en_cours.nature = DIV;
                			etat = E_FIN;
 			   			break;
 		       		  default:
@@ -158,19 +162,19 @@
 
 	    case E_FIN:  // etat final
 		break ;
-	    
+
 	  } ; // fin du switch(etat)
 	} ; // fin du while (etat != fin)
    }
 
    /* --------------------------------------------------------------------- */
 
-   // cette fonction ajoute le caractere c a la fin de la chaine s 
+   // cette fonction ajoute le caractere c a la fin de la chaine s
    // (la chaine s est donc modifiee)
- 
+
    void ajouter_caractere (char *s, char c) {
 	int l ;
-	
+
 	l = strlen(s) ;
 	s[l] = c ;
 	s[l+1] = '\0' ;
@@ -187,7 +191,7 @@
    /* --------------------------------------------------------------------- */
 
    // vaut vrai ssi c designe un caractere separateur
-   int est_separateur(char c) { 
+   int est_separateur(char c) {
       return c == ' ' || c == '\t' || c == '\n' ;
    }
 
@@ -203,15 +207,15 @@
    // vaut vrai ssi c designe un caractere correspondant a un symbole arithmetique
    int est_symbole(char c)  {
       switch (c) {
-        case '+':  
-	 	case '-':  
+        case '+':
+	 	case '-':
 	 	case '*':
 	 	case '/':
             return 1;
 
         default:
             return 0;
-      } 
+      }
    }
 
    /* --------------------------------------------------------------------- */
@@ -221,12 +225,13 @@
 	switch (nature) {
 		case ENTIER: return "ENTIER" ;
 		case PLUS: return "PLUS" ;
-      		case MOINS: return "MOINS" ;            
-      		case MUL: return "MUL" ;              
-      		case FIN_SEQUENCE: return "FIN_SEQUENCE" ;     
-      		default: return "ERREUR" ;            
+      		case MOINS: return "MOINS" ;
+      		case MUL: return "MUL" ;
+          case DIV: return "DIV" ;
+      		case FIN_SEQUENCE: return "FIN_SEQUENCE" ;
+      		default: return "ERREUR" ;
 	} ;
-   } 
+   }
 
    /* --------------------------------------------------------------------- */
 
@@ -234,9 +239,9 @@
    void afficher(Lexeme l) {
 
       switch (l.nature) {
-         case FIN_SEQUENCE: 
+         case FIN_SEQUENCE:
             break;
-         default: 
+         default:
             printf("(ligne %d, ", l.ligne);
             printf("colonne %d) : ",l.colonne);
 	    printf("[") ;
@@ -253,4 +258,3 @@
    }
 
    /* --------------------------------------------------------------------- */
-
