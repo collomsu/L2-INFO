@@ -11,11 +11,13 @@
 etat final : une Expression Arithmetique a ete lue dans le fichier
 si elle ne contient pas d'erreur de syntaxe un message est affiche
 sinon le pgm termine sur un message d'erreur */
-void analyser(char *fichier){
+void analyser(char *fichier, float *resultat){
   bool caractere = false;
-  bool operateur = false;
+  int operateur = 0;
   bool ok = true;
   Lexeme lex;
+
+  *resultat = 0;
 
   demarrer(fichier);
   while(! fin_de_sequence()){
@@ -23,7 +25,7 @@ void analyser(char *fichier){
     printf("%s\n", lex.chaine);
     switch (lex.nature) {
       case FIN_SEQUENCE:
-        if(operateur){
+        if(operateur != 0){
           ok = false;
         }
         break;
@@ -31,11 +33,26 @@ void analyser(char *fichier){
       case MOINS:
       case MUL:
       case DIV:
-        if(operateur || !caractere){
+        if(operateur != 0 || !caractere){
           ok = false;
         } else {
-          operateur = true;
           caractere = false;
+          switch (lex.nature) {
+            case PLUS:
+              operateur = 1;
+              break;
+            case MOINS:
+              operateur = 2;
+              break;
+            case MUL:
+              operateur = 3;
+              break;
+            case DIV:
+              operateur = 4;
+              break;
+            default:
+              break;
+          }
         }
         break;
       case ENTIER:
@@ -43,7 +60,24 @@ void analyser(char *fichier){
           ok = false;
         } else {
           caractere = true;
-          operateur = false;
+          switch (operateur) {
+            case 1:
+              *resultat += lex.valeur;
+              break;
+            case 2:
+              *resultat -= lex.valeur;
+              break;
+            case 3:
+              *resultat = *resultat * lex.valeur;
+              break;
+            case 4:
+              *resultat = *resultat / lex.valeur;
+              break;
+            default:
+              *resultat = lex.valeur;
+              break;
+          }
+          operateur = 0;
         }
         break;
       default:
@@ -51,11 +85,13 @@ void analyser(char *fichier){
     }
     avancer() ;
     if(!ok){
-      printf("ERREUR : Syntaxe inccorect.\n");
+      printf("ERREUR : Syntaxe incorrect.\n");
+      *resultat = 0.000001;
       break;
     }
   }
-  if (operateur) {
-    printf("ERREUR : Syntaxe inccorect.\n");
+  if (operateur != 0) {
+    printf("ERREUR : Syntaxe incorrect.\n");
+    *resultat = 0.000001;
   }
 }
