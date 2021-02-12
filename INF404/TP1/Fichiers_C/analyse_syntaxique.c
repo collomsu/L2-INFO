@@ -71,8 +71,15 @@ void analyser(char *fichier, float *resultat){
               *resultat = *resultat * lex.valeur;
               break;
             case 4:
-              *resultat = *resultat / lex.valeur;
-              break;
+              if(lex.valeur == 0){
+                printf("ERREUR : Division par 0\n");
+                *resultat = 0.000001;
+                ok = false;
+                break;
+              } else {
+                *resultat = *resultat / lex.valeur;
+                break;
+              }
             default:
               *resultat = lex.valeur;
               break;

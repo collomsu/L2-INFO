@@ -12,18 +12,40 @@ etat final : une EAEP a ete lue dans le nom_fichier
 si elle ne contient pas d'erreur de syntaxe un message est affiche
 sinon le pgm termine sur un message d'erreur */
 
-bool Rec_eaep(Lexeme lex){
-  switch (lex.nature) {
+bool Rec_op(Lexeme *lex){
+  printf("%s\n",lex->chaine);
+  switch (lex->nature) {
+    case PLUS:
+    case MUL:
+    case MOINS:
+    case DIV:
+      avancer();
+      *lex = lexeme_courant();
+      break;
+    default:
+      printf("ERREUR : operateur incorrect\n");
+      return 0;
+  }
+  return 1;
+}
+
+bool Rec_eaep(Lexeme *lex){
+  printf("%s\n",lex->chaine);
+  switch (lex->nature) {
     case ENTIER:
       avancer();
+      *lex = lexeme_courant();
       break;
     case PARO:
-      avancer()
+      avancer();
+      *lex = lexeme_courant();
       Rec_eaep(lex);
       Rec_op(lex);
       Rec_eaep(lex);
-      if(lex.nature == PARF){
+      if(lex->nature == PARF){
+        printf("%s\n",lex->chaine);
         avancer();
+        *lex = lexeme_courant();
       } else {
         printf("ERREUR : EAEP incorrect (PARF manquante)\n");
         return 0;
@@ -36,101 +58,26 @@ bool Rec_eaep(Lexeme lex){
   return 1;
 }
 
-bool Rec_op(Lexeme lex){
-  switch (lex.nature) {
-    case PLUS:
-    case MUL:
-    case MOINS:
-    case DIV:
-      avancer();
-    default:
-      printf("ERREUR : operateur incorrect\n");
-      return 0;
-  }
-  return 1;
-}
-
 void analyser(char *fichier, float *resultat){
-  bool caractere = false;
-  int operateur = 0;
-  bool ok = true;
-  Lexeme lex;
+  Lexeme *lex = malloc(sizeof(Lexeme));
 
   *resultat = 0;
 
   demarrer(fichier);
+  *lex = lexeme_courant();
   while(! fin_de_sequence()){
-    lex = lexeme_courant();
-    printf("%s\n", lex.chaine);
-    switch (lex.nature) {
-      case FIN_SEQUENCE:
-        if(operateur != 0){
-          ok = false;
-        }
-        break;
-      case PLUS:
-      case MOINS:
-      case MUL:
-      case DIV:
-        if(operateur != 0 || !caractere){
-          ok = false;
-        } else {
-          caractere = false;
-          switch (lex.nature) {
-            case PLUS:
-              operateur = 1;
-              break;
-            case MOINS:
-              operateur = 2;
-              break;
-            case MUL:
-              operateur = 3;
-              break;
-            case DIV:
-              operateur = 4;
-              break;
-            default:
-              break;
-          }
-        }
-        break;
-      case ENTIER:
-        if (caractere) {
-          ok = false;
-        } else {
-          caractere = true;
-          switch (operateur) {
-            case 1:
-              *resultat += lex.valeur;
-              break;
-            case 2:
-              *resultat -= lex.valeur;
-              break;
-            case 3:
-              *resultat = *resultat * lex.valeur;
-              break;
-            case 4:
-              *resultat = *resultat / lex.valeur;
-              break;
-            default:
-              *resultat = lex.valeur;
-              break;
-          }
-          operateur = 0;
-        }
-        break;
-      default:
-        break;
-    }
-    avancer() ;
-    if(!ok){
+    if(!Rec_eaep(lex)){
       printf("ERREUR : Syntaxe incorrect.\n");
       *resultat = 0.000001;
       break;
+    } else {
+      if(! fin_de_sequence()){
+        if(!Rec_op(lex)){
+          printf("ERREUR : Syntaxe incorrect.\n");
+          *resultat = 0.000001;
+          break;
+        }
+      }
     }
-  }
-  if (operateur != 0) {
-    printf("ERREUR : Syntaxe incorrect.\n");
-    *resultat = 0.000001;
   }
 }

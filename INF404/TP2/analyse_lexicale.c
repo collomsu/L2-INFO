@@ -116,7 +116,6 @@
        		lexeme_en_cours.ligne = numero_ligne();
           lexeme_en_cours.colonne = numero_colonne();
        		ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-          printf("%s\n",lexeme_en_cours.chaine);
        		switch (caractere_courant()) {
        		  case '+':
          			lexeme_en_cours.nature = PLUS;
@@ -137,7 +136,6 @@
             case '(':
        			  lexeme_en_cours.nature = PARO;
        			  etat = E_FIN;
-              printf("oui\n");
  			        break;
             case ')':
        			  lexeme_en_cours.nature = PARF;
