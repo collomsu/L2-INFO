@@ -7,7 +7,7 @@
 #include "lecture_caracteres.h"
 #include "analyse_lexicale.h"
 
-float evaluer(float vald, float valg, char op){
+float evaluer(float valg, float vald, char op){
   switch (op) {
     case '+':
       return (float)(valg+vald);
@@ -32,14 +32,13 @@ float evaluer(float vald, float valg, char op){
   }
 }
 
-bool Rec_op(Lexeme *lex, char op){
-  printf("%s\n",lex->chaine);
+bool Rec_op(Lexeme *lex, char *op){
   switch (lex->nature) {
     case PLUS:
     case MUL:
     case MOINS:
     case DIV:
-      op = *lex->chaine;
+      *op = *lex->chaine;
       avancer();
       *lex = lexeme_courant();
       break;
@@ -50,16 +49,18 @@ bool Rec_op(Lexeme *lex, char op){
   return 1;
 }
 
-bool Rec_eaep(Lexeme *lex, float val){
-  printf("%s\n",lex->chaine);
-  float valg = 0;
-  float vald = 0;
-  char op = '\0';
+bool Rec_eaep(Lexeme *lex, float *val){
+  float *valg = malloc(sizeof(float));
+  float *vald = malloc(sizeof(float));
+  char *op = malloc(sizeof(char));
+  *valg = 0;
+  *vald = 0;
+  *op = '\0';
   switch (lex->nature) {
     case ENTIER:
       avancer();
       *lex = lexeme_courant();
-      val = lex->valeur;
+      *val = lex->valeur;
       break;
     case PARO:
       avancer();
@@ -67,12 +68,11 @@ bool Rec_eaep(Lexeme *lex, float val){
       Rec_eaep(lex, valg);
       Rec_op(lex, op);
       Rec_eaep(lex, vald);
-      val = evaluer(valg,vald,op);
-      if(val == (float)(0.000001)){
+      *val = evaluer(*valg,*vald,*op);
+      if(*val == (float)(0.000001)){
         return 0;
       }
       if(lex->nature == PARF){
-        printf("%s\n",lex->chaine);
         avancer();
         *lex = lexeme_courant();
       } else {
@@ -95,25 +95,36 @@ sinon le pgm termine sur un message d'erreur */
 
 void analyser(char *fichier, float *resultat){
   Lexeme *lex = malloc(sizeof(Lexeme));
-
+  char *op = malloc(sizeof(char));
+  float *val = malloc(sizeof(float));
+  bool opafaire = false;
   *resultat = 0;
-  float val = 0;
-  char op = '\0';
+  *val = 0;
+  *op = '\0';
 
   demarrer(fichier);
   *lex = lexeme_courant();
+  int i = 0;
   while(! fin_de_sequence()){
+    i++;
     if(!Rec_eaep(lex, val)){
       printf("ERREUR : Syntaxe incorrect.\n");
       *resultat = 0.000001;
       break;
     } else {
+      if(opafaire){
+        *resultat = evaluer(*resultat, *val, *op);
+        opafaire = false;
+      } else {
+        *resultat = *val;
+      }
       if(! fin_de_sequence()){
         if(!Rec_op(lex, op)){
           printf("ERREUR : Syntaxe incorrect.\n");
           *resultat = 0.000001;
           break;
         }
+        opafaire = true;
       }
     }
   }
