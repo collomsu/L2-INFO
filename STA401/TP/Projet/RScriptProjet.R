@@ -1,5 +1,5 @@
 #Création des variables avec les données récoltées (en min)
-res <- Sondage.sur.le.temps.de.repas
+res <- read.table('Data-Collomb-Sullivan.csv', header=TRUE, sep=',')
 midi <- res$Midi
 soir <- res$Soir
 
