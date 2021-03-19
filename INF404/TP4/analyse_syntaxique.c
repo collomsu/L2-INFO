@@ -6,85 +6,117 @@
 #include "analyse_syntaxique.h"
 #include "lecture_caracteres.h"
 #include "analyse_lexicale.h"
+#include "type_ast.h"
+#include "ast_construction.h"
+#include "ast_parcours.h"
 
-float evaluer(float valg, float vald, char op){
-  switch (op) {
-    case '+':
-      return (float)(valg+vald);
-      break;
-    case '-':
-      return (float)(valg-vald);
-      break;
-    case '*':
-      return (float)(valg*vald);
-      break;
-    case '/':
-      if(vald == 0){
-        printf("ERREUR : Division par 0\n");
-        return (float)(0.000001);
-      } else {
-        return (float)(valg/vald);
-      }
-      break;
+TypeOperateur Operateur(Nature_Lexeme n){
+  switch (n) {
+    case PLUS:
+      return N_PLUS;
+    case MOINS:
+      return N_MOINS;
+    case MUL:
+      return N_MUL;
+    case DIV:
+      return N_DIV;
     default:
-      printf("ERREUR : Operateur inconnu\n");
-      return (float)(0.000001);
+      printf("ERREUR : Operateur incorrect\n");
   }
 }
 
-bool Rec_op(Lexeme *lex, char *op){
-  switch (lex->nature) {
+int op(TypeOperateur *op){
+  switch (lexeme_courant().nature) {
     case PLUS:
-    case MUL:
     case MOINS:
-    case DIV:
-      *op = *lex->chaine;
+      *op = Operateur(lexeme_courant().nature);
       avancer();
-      *lex = lexeme_courant();
-      break;
+      return 1;
+    case MUL:
+      *op = Operateur(lexeme_courant().nature);
+      avancer();
+      return 2;
+    case DIV:
+      *op = Operateur(lexeme_courant().nature);
+      avancer();
+      return 3;
     default:
-      printf("ERREUR : operateur incorrect\n");
       return 0;
   }
-  return 1;
 }
 
-bool Rec_eaep(Lexeme *lex, float *val){
-  float *valg = malloc(sizeof(float));
-  float *vald = malloc(sizeof(float));
-  char *op = malloc(sizeof(char));
-  *valg = 0;
-  *vald = 0;
-  *op = '\0';
-  switch (lex->nature) {
+void facteur(Ast *A1){
+  switch (lexeme_courant().nature) {
     case ENTIER:
+      *A1 = creer_valeur(lexeme_courant().valeur);
       avancer();
-      *lex = lexeme_courant();
-      *val = lex->valeur;
       break;
     case PARO:
-      avancer();
-      *lex = lexeme_courant();
-      Rec_eaep(lex, valg);
-      Rec_op(lex, op);
-      Rec_eaep(lex, vald);
-      *val = evaluer(*valg,*vald,*op);
-      if(*val == (float)(0.000001)){
-        return 0;
-      }
-      if(lex->nature == PARF){
+      avancer()
+      rec_eag(A1);
+      if(lexeme_courant().nature == PARF){
         avancer();
-        *lex = lexeme_courant();
       } else {
-        printf("ERREUR : EAEP incorrect (PARF manquante)\n");
-        return 0;
+        printf("ERREUR : EAG incorrect (PARF manquante)\n");
       }
       break;
     default:
-      printf("ERREUR : EAEP incorrect\n");
-      return 0;
+      printf("ERREUR : Facteur\n");
   }
-  return 1;
+}
+
+void suite_seq_facteur(Ast A1, Ast *A2){
+  Ast A3, A4;
+  TypeOperateur op;
+  int res = op(&op);
+  switch (res) {
+    case 2:
+    facteur(&A3);
+    A4 = creer_operation(op, A1, A3);
+    suite_seq_facteur(A4, A2);
+    case 3:
+      if(lexeme_courant().valeur == 0){
+        printf("ERREUR : Division par 0 impossible\n");
+        break;
+      }
+      facteur(&A3);
+      A4 = creer_operation(op, A1, A3);
+      suite_seq_facteur(A4, A2);
+    default:
+      *A2 = A1;
+  }
+}
+
+void seq_facteur(Ast *A1){
+  Ast A2;
+  facteur(&A2);
+  suite_seq_facteur(A2,A1);
+}
+
+void terme(Ast *A){
+  seq_facteur(A);
+}
+
+void suite_seq_terme(Ast A1, Ast &A2){
+  Ast A3,A4;
+  TypeOperateur op;
+  if (op1(&op)){
+    terme(&A3);
+    A4 = creer_operation(op, A1, A3);
+    suite_seq_terme(A4, A2);
+  } else {
+    *A2 = A1;
+  }
+}
+
+void seq_terme(Ast *A1){
+  Ast A2;
+  terme(&A2);
+  suite_seq_terme(A2,A1);
+}
+
+void rec_eag(Ast *A){
+  seq_terme(A);
 }
 
 void Rec_suite_terme(Lexeme *lex){
