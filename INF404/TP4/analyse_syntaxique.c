@@ -22,6 +22,7 @@ TypeOperateur Operateur(Nature_Lexeme n){
       return N_DIV;
     default:
       printf("ERREUR : Operateur incorrect\n");
+      exit(0);
   }
 }
 
@@ -58,10 +59,12 @@ void facteur(Ast *A1){
         avancer();
       } else {
         printf("ERREUR : EAG incorrect (PARF manquante)\n");
+        exit(0);
       }
       break;
     default:
       printf("ERREUR : Facteur\n");
+      exit(0);
   }
 }
 
@@ -77,7 +80,7 @@ void suite_seq_facteur(Ast A1, Ast *A2){
     case 3:
       if(lexeme_courant().valeur == 0){
         printf("ERREUR : Division par 0 impossible\n");
-        break;
+        exit(0);
       }
       facteur(&A3);
       A4 = creer_operation(op, A1, A3);
@@ -117,34 +120,6 @@ void seq_terme(Ast *A1){
 
 void rec_eag(Ast *A){
   seq_terme(A);
-}
-
-void Rec_suite_terme(Lexeme *lex){
-  switch (lex->nature) {
-    case ENTIER:
-      avancer();
-      *lex = lexeme_courant();
-      break;
-    case PARO:
-      avancer();
-      *lex = lexeme_courant();
-      Rec_eag(lex);
-        if(lex->nature == PARF){
-          avancer();
-          *lex = lexeme_courant();
-        } else {
-          printf("ERREUR : EAG incorrect (PARF manquante)\n");
-        }
-  }
-}
-
-void Rec_seq_terme(Lexeme *lex){
-  Rec_terme();
-  Rec_suite_terme();
-}
-
-void Rec_eag(Lexeme *lex){
-  Rec_seq_terme();
 }
 
 /* etat initial : indifferent
