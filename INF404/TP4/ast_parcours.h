@@ -1,7 +1,7 @@
 #ifndef __AST_PARCOURS__
 #define __AST_PARCOURS__
 
-void afficher(Ast expr) ;
+void afficherAst(Ast expr) ;
 // affiche l'arbre abstrait de l'expression arithmetique expr
 
 int evaluation(Ast expr) ;
@@ -9,4 +9,3 @@ int evaluation(Ast expr) ;
 // FONCTION A COMPLETER !
 
 #endif
-

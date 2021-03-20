@@ -13,16 +13,19 @@ void aff_operateur(TypeOperateur op){
 		case N_MUL:
 			printf("*") ;
 			break;
-	} 
+		case N_DIV:
+			printf("/") ;
+			break;
+	}
 }
 
-void afficher(Ast expr) {
+void afficherAst(Ast expr) {
 	switch (expr->nature) {
                case OPERATION:
                         printf("(");
-                        afficher(expr->gauche);
+                        afficherAst(expr->gauche);
                         aff_operateur(expr->operateur) ;
-                        afficher(expr->droite);
+                        afficherAst(expr->droite);
                         printf(")");
 			break ;
                case VALEUR:
@@ -35,4 +38,3 @@ int evaluation(Ast expr) {
       // A COMPLETER !
       return -1 ;
 }
-

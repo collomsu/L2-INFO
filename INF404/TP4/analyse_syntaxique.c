@@ -10,6 +10,9 @@
 #include "ast_construction.h"
 #include "ast_parcours.h"
 
+void rec_eag(Ast *A);
+int Op(TypeOperateur *op);
+
 TypeOperateur Operateur(Nature_Lexeme n){
   switch (n) {
     case PLUS:
@@ -26,7 +29,7 @@ TypeOperateur Operateur(Nature_Lexeme n){
   }
 }
 
-int op(TypeOperateur *op){
+int Op(TypeOperateur *op){
   switch (lexeme_courant().nature) {
     case PLUS:
     case MOINS:
@@ -53,7 +56,7 @@ void facteur(Ast *A1){
       avancer();
       break;
     case PARO:
-      avancer()
+      avancer();
       rec_eag(A1);
       if(lexeme_courant().nature == PARF){
         avancer();
@@ -71,7 +74,7 @@ void facteur(Ast *A1){
 void suite_seq_facteur(Ast A1, Ast *A2){
   Ast A3, A4;
   TypeOperateur op;
-  int res = op(&op);
+  int res = Op(&op);
   switch (res) {
     case 2:
     facteur(&A3);
@@ -100,10 +103,10 @@ void terme(Ast *A){
   seq_facteur(A);
 }
 
-void suite_seq_terme(Ast A1, Ast &A2){
+void suite_seq_terme(Ast A1, Ast *A2){
   Ast A3,A4;
   TypeOperateur op;
-  if (op1(&op)){
+  if (Op(&op)){
     terme(&A3);
     A4 = creer_operation(op, A1, A3);
     suite_seq_terme(A4, A2);
@@ -113,6 +116,7 @@ void suite_seq_terme(Ast A1, Ast &A2){
 }
 
 void seq_terme(Ast *A1){
+  printf("oui\n");
   Ast A2;
   terme(&A2);
   suite_seq_terme(A2,A1);
@@ -128,39 +132,12 @@ si elle ne contient pas d'erreur de syntaxe un message est affiche
 et la valeur de cette expression est fournie dans le parametre resultat
 sinon le pgm termine sur un message d'erreur */
 
-void analyser(char *fichier, float *resultat){
-  Lexeme *lex = malloc(sizeof(Lexeme));
-  char *op = malloc(sizeof(char));
-  float *val = malloc(sizeof(float));
-  bool opafaire = false;
-  *resultat = 0;
-  *val = 0;
-  *op = '\0';
-
+void analyser(char *fichier){
+  Ast A;
   demarrer(fichier);
-  *lex = lexeme_courant();
-  int i = 0;
-  while(! fin_de_sequence()){
-    i++;
-    if(!Rec_eaep(lex, val)){
-      printf("ERREUR : Syntaxe incorrect.\n");
-      *resultat = 0.000001;
-      break;
-    } else {
-      if(opafaire){
-        *resultat = evaluer(*resultat, *val, *op);
-        opafaire = false;
-      } else {
-        *resultat = *val;
-      }
-      if(! fin_de_sequence()){
-        if(!Rec_op(lex, op)){
-          printf("ERREUR : Syntaxe incorrect.\n");
-          *resultat = 0.000001;
-          break;
-        }
-        opafaire = true;
-      }
-    }
+  rec_eag(&A);
+  if(lexeme_courant().nature != FIN_SEQUENCE){
+    printf("ERREUR : Syntaxe incorrect (fin de sequence non atteint)\n");
   }
+  afficherAst(A);
 }
