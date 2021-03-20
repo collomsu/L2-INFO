@@ -6,7 +6,6 @@
 #include "analyse_syntaxique.h"
 #include "lecture_caracteres.h"
 #include "analyse_lexicale.h"
-#include "type_ast.h"
 #include "ast_construction.h"
 #include "ast_parcours.h"
 
@@ -141,14 +140,10 @@ si elle ne contient pas d'erreur de syntaxe un message est affiche
 et la valeur de cette expression est fournie dans le parametre resultat
 sinon le pgm termine sur un message d'erreur */
 
-void analyser(char *fichier){
-  Ast A;
+void analyser(char *fichier, Ast *arbre){
   demarrer(fichier);
-  rec_eag(&A);
+  rec_eag(arbre);
   if(lexeme_courant().nature != FIN_SEQUENCE){
     printf("ERREUR : Syntaxe incorrect (fin de sequence non atteint)\n");
   }
-  printf("Ast produit : ");
-  afficherAst(A);
-  printf("\nLe resultat du calcul est = %d\n", evaluation(A));
 }

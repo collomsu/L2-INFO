@@ -35,20 +35,20 @@ void afficherAst(Ast expr) {
 	}
 }
 
-int evaluation(Ast expr) {
+double evaluation(Ast expr) {
 	switch (expr->nature) {
 		case VALEUR:
 			return expr->valeur;
 		case OPERATION:
 			switch (expr->operateur) {
 				case N_PLUS:
-					return evaluation(expr->gauche)+evaluation(expr->droite);
+					return (double)(evaluation(expr->gauche)+evaluation(expr->droite));
 				case N_MOINS:
-					return evaluation(expr->gauche)-evaluation(expr->droite);
+					return (double)(evaluation(expr->gauche)-evaluation(expr->droite));
 				case N_MUL:
-					return evaluation(expr->gauche)*evaluation(expr->droite);
+					return (double)(evaluation(expr->gauche)*evaluation(expr->droite));
 				case N_DIV:
-					return evaluation(expr->gauche)/evaluation(expr->droite);
+					return (double)(evaluation(expr->gauche)/evaluation(expr->droite));
 			}
 		default:
 			exit(0);
