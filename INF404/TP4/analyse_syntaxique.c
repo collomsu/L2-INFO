@@ -11,7 +11,8 @@
 #include "ast_parcours.h"
 
 void rec_eag(Ast *A);
-int Op(TypeOperateur *op);
+int Op1(TypeOperateur *op);
+int Op2(TypeOperateur *op);
 
 TypeOperateur Operateur(Nature_Lexeme n){
   switch (n) {
@@ -29,21 +30,28 @@ TypeOperateur Operateur(Nature_Lexeme n){
   }
 }
 
-int Op(TypeOperateur *op){
-  switch (lexeme_courant().nature) {
+int Op1(TypeOperateur *op){
+  switch(lexeme_courant().nature){
     case PLUS:
     case MOINS:
       *op = Operateur(lexeme_courant().nature);
       avancer();
       return 1;
+    default:
+      return 0;
+  }
+}
+
+int Op2(TypeOperateur *op){
+  switch(lexeme_courant().nature){
     case MUL:
       *op = Operateur(lexeme_courant().nature);
       avancer();
-      return 2;
+      return 1;
     case DIV:
       *op = Operateur(lexeme_courant().nature);
       avancer();
-      return 3;
+      return 2;
     default:
       return 0;
   }
@@ -74,13 +82,14 @@ void facteur(Ast *A1){
 void suite_seq_facteur(Ast A1, Ast *A2){
   Ast A3, A4;
   TypeOperateur op;
-  int res = Op(&op);
+  int res = Op2(&op);
   switch (res) {
+    case 1:
+      facteur(&A3);
+      A4 = creer_operation(op, A1, A3);
+      suite_seq_facteur(A4, A2);
+      break;
     case 2:
-    facteur(&A3);
-    A4 = creer_operation(op, A1, A3);
-    suite_seq_facteur(A4, A2);
-    case 3:
       if(lexeme_courant().valeur == 0){
         printf("ERREUR : Division par 0 impossible\n");
         exit(0);
@@ -88,6 +97,7 @@ void suite_seq_facteur(Ast A1, Ast *A2){
       facteur(&A3);
       A4 = creer_operation(op, A1, A3);
       suite_seq_facteur(A4, A2);
+      break;
     default:
       *A2 = A1;
   }
@@ -106,7 +116,7 @@ void terme(Ast *A){
 void suite_seq_terme(Ast A1, Ast *A2){
   Ast A3,A4;
   TypeOperateur op;
-  if (Op(&op)){
+  if (Op1(&op)){
     terme(&A3);
     A4 = creer_operation(op, A1, A3);
     suite_seq_terme(A4, A2);
@@ -116,7 +126,6 @@ void suite_seq_terme(Ast A1, Ast *A2){
 }
 
 void seq_terme(Ast *A1){
-  printf("oui\n");
   Ast A2;
   terme(&A2);
   suite_seq_terme(A2,A1);
@@ -139,5 +148,7 @@ void analyser(char *fichier){
   if(lexeme_courant().nature != FIN_SEQUENCE){
     printf("ERREUR : Syntaxe incorrect (fin de sequence non atteint)\n");
   }
+  printf("Ast produit : ");
   afficherAst(A);
+  printf("\nLe resultat du calcul est = %d\n", evaluation(A));
 }
