@@ -1,0 +1,130 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+#Objectif
+  Comprendre la loi des grandes nombres et le théorème centrale limite à l'aide de données simulées.
+  
+#Exercice 1: Loi des grands nombres
+Soit $x_1, X_2, ..., X_,$ une suite de variables aléatoire indépendantes de même loi et telles que $E(x_1) < +\infty$ alors:
+
+$$
+\bar{x_n} = \frac{1}{n} \sum_{i = 1}^n x_1 \underset{n\rightarrow + \infty}{\longrightarrow}E(x_1)
+$$
+
+#Question 1
+```{r}
+p = 0.45
+n = 100
+x = rbinom(n,1,p)
+barplot(prop.table(table(x)))
+abline(h = p)
+```
+
+#Question 2
+
+$$
+E_k = \frac {1}{k}\sum_{j = 1}^k x_j
+$$
+$$
+(\text{cumsum(x)})_k = (\sum_{i_k})
+$$
+
+```{r}
+suitemoy = rep(0,n)
+s = 0
+for(k in 1:n){
+  s = s+x[k]
+  suitemoy[k] = s/k
+}
+
+plot(suitemoy, ylim = c(0,1), type = "l")
+abline(h = p, col = "red")
+```
+
+#Question 3
+```{r}
+plot(suitemoy, ylim = c(0,1))
+abline(h = p, col = "red")
+```
+
+#Partie 2: théorème centrale limite
+
+#Exercice 3
+#Question 1
+```{r}
+n = 5
+mu = -2
+sigma = 2
+x = rnorm(n,mu,sigma)
+moyx = mean(x)
+cat("moyx =", moyx, "\n")
+```
+
+#Question 2
+```{r}
+x1 = rnorm(n,mu,sigma)
+x2 = rnorm(n,mu,sigma)
+Mdata = rbind(x1,x2)
+rowMeans(Mdata)
+```
+
+#Question 3
+```{r}
+N = 100
+x = rnorm(n*N,mu, sigma)
+Mdata = matrix(x,nrow= N)
+```
+
+#Question 4
+```{r}
+apply(Mdata, MARGIN = 1, mean) -> moyennes
+moyennes
+```
+
+#Question 5
+```{r}
+mean(moyennes)
+sd(moyennes)
+```
+
+#Question 6
+```{r}
+hist(moyennes, probability = 1)
+curve(dnorm(x,mean(moyennes), sd(moyennes)), col = "red", add = T)
+curve(dnorm(x,mu, sigma/sqrt(n)), col = "purple", add = T)
+```
+
+#Question 7
+```{r}
+moyennescr = sqrt(n)/sigma*(moyennes-mu)
+hist(moyennescr, probability = T)
+curve(dnorm(x), add = T, col = "purple")
+```
+
+#Exercice 3
+Définissons les paramétres:
+```{r}
+p = 0.45
+sigma = sqrt(p*(1-p))
+mu = p
+n = 500
+N = 10000
+```
+
+Générons Mdata:
+```{r}
+x = rbinom(n*N,1,p)
+Mdata = matrix(x,ncol = n)
+moyennes = rowMeans(Mdata)
+```
+
+```{r}
+moyennescr = sqrt(n)/sigma*(moyennes-mu)
+hist(moyennescr, probability = T)
+curve(dnorm(x), col = "purple", add = T)
+```
+
+
+
