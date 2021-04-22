@@ -1,0 +1,121 @@
+---
+title: "TP4"
+output: html_notebook
+---
+
+#TP4
+#Exercice 1
+#1)
+
+```{r}
+n=50
+mu=2
+sig=2
+x=rnorm(n,mu,sig)
+```
+
+#2)
+Calculer les déciles empiriques de x
+```{r}
+quantile(x, prob = seq(0.1,0.9,0.1)) -> demp
+```
+
+#3)
+Calculer les déciles théoriques:
+```{r}
+qnorm(seq(0.1,0.9,0.1),mu,sig) -> dth
+```
+
+#4)
+Tracer demp en fonction de dth
+```{r}
+plot(dth,demp)
+abline(a = 0, b = 1, col = "red")
+legend(-0.5,4,legend="y = x", col="red", lty = 1)
+```
+
+#5)
+```{r}
+hist(x, probability =  TRUE)
+mu_est = mean(x)
+sigma_est = sd(x)
+curve(dnorm(x,mu_est,sigma_est), add = T, col = "red")
+legend(-4,0.20,legend="f(x,mu = 2, sigma = 4)", col="red", lty = 1)
+```
+L'histogramme semble coïncider avec la densité de la loi normale, mais puisque nous avons peu de valeurs, l'histogramme est mal résolu.
+
+#6)
+```{r}
+quantile(x,prob = ((1:n)/(n+1)), names = F, type = 1) -> q_emp
+sort(x) -> sorted
+cat(q_emp,"\n \n")
+cat(sorted,"\n\n")
+cat(sorted == q_emp,"n")
+```
+Nous constatons que les quantiles empiriques d'ordre $1/(n+1) ... n/(n+1)$ sont égaux à la suite des observations triées par ordre croissant.
+
+#7
+```{r}
+q_th = qnorm((1:n)/(1+n), mu, sig)
+plot(q_th,q_emp)
+abline(a = 0, b = 1, col = "red")
+```
+
+#8)
+```{r}
+q_th_red = qnorm((1:n)/(n+1))
+plot(q_th_red,q_emp)
+abline(a = mu, b = sig, col = "red")
+```
+
+#9)
+```{r}
+qqnorm(x)
+abline(a = mean(x), b = sd(x), col = "purple")
+abline(a = mu, b = sig, col = "red")
+qqline(x,col="green")
+```
+Donc la fonction qqline ne trace pas la même droite de Henry.
+
+#Exercice 2
+#1)
+```{r}
+n = 1000
+```
+
+#2)
+```{r}
+runif(n,min = -1, max = 1) -> x
+qqnorm(x)
+qqline(x, col="red")
+abline(h = c(-1,1), col ="purple")
+```
+```{r}
+mu = mean(x)
+sig = sd(x)
+curve(dunif(x,-1,1),from = -3, to = 3, type = "s", ylim = c(0,0.8))
+curve(dnorm(x,mu,sig), add= T, col = "red")
+```
+```{r}
+rt(n, df = 3) -> x
+qqnorm(x)
+qqline(x,col="red")
+```
+```{r}
+mu = mean(x)
+sig = sd(x)
+curve(dt(x,df = 3),from = -4, to = 4, ylim = c(0,0.4))
+curve(dnorm(x,mu,sig), add= T, col = "red")
+legend(-3,0.4,legend=c("normale","student"), col = c("red","black"), lty=1)
+```
+
+```{r}
+rchisq(n, df=2) -> x
+qqnorm(x)
+qqline(x,col = "red")
+abline(a=mean(x), b= sd(x))
+abline(h=0,c)
+```
+
+
+

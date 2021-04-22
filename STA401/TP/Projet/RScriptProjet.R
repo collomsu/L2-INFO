@@ -1,29 +1,28 @@
-#Création des variables avec les données récoltées (en min)
-res <- read.table('Data-Collomb-Sullivan.csv', header=TRUE, sep=',')
+### Création des variables avec les données récoltées (en min)
+setwd("~/GitHub/L2_INFO/STA401/TP/Projet")
+res <- read.table('INF3-Collomb-Sullivan.csv', header=TRUE, sep=',')
 midi <- res$Midi
 soir <- res$Soir
 
-#Summary des résultats
+### Résumé numérique
 summary(res)
-
-#Ecart-type pour midi et soir
 sd(midi)
 sd(soir)
 
-#Graphique
-
-#boxplot
+### Graphique
+# Boxplot
 boxplot(midi,soir, main="Temps de repas le midi et le soir (en min)", ylab="Temps (en min)", names=c("Midi","Soir"))
 
-#histogramme
+# Hist
 par(mfrow=c(1,2))
-plot(hist(midi, main=""))
-curve(dnorm(x,mean(midi),sd(midi)))
-hist(soir, main="")
+hist(midi, main = "Histogramme des résultats du midi", probability =  TRUE)
+curve(dnorm(x,mean(midi),sd(midi)), add = T, col = "red")
+hist(soir, main = "Histogramme des résultats du soir", probability =  TRUE)
+curve(dnorm(x,mean(soir),sd(soir)), add = T, col = "red")
 
-#quantile-quantile plot
+# Qqnorm
 par(mfrow=c(1,2))
-qqnorm(midi, main="histogramme des résultats du midi")
-qqline(midi)
-qqnorm(soir, main="histogramme des résultats du soir")
-qqline(soir)
+qqnorm(midi, main = "Quantile-quantile plot pour les résultats du midi", ylab = "Temps (en min)")
+qqline(midi,col="red")
+qqnorm(soir, main = "Quantile-quantile plot pour les résultats du soir", ylab = "Temps (en min)")
+qqline(soir,col="red")
