@@ -134,6 +134,14 @@
        			  lexeme_en_cours.nature = DIV;
        			  etat = E_FIN;
  			        break;
+            case '(':
+              lexeme_en_cours.nature = PARO;
+              etat = E_FIN;
+              break;
+            case ')':
+              lexeme_en_cours.nature = PARF;
+              etat = E_FIN;
+              break;
             case '=':
        			  lexeme_en_cours.nature = AFF;
        			  etat = E_FIN;
@@ -240,12 +248,14 @@
     	 	case '-':
     	 	case '*':
     	 	case '/':
+        case '(':
+        case ')':
         case '=':
         case ';':
-            return 1;
+          return 1;
 
         default:
-            return 0;
+          return 0;
       }
    }
 
@@ -253,12 +263,7 @@
 
    // Vrai ssi c designe un caractère correspondant à une lettre de l'alphabet
    int est_lettre(char c){
-     int toascii = c;
-     if ((toascii >= 65 && toascii <= 90) || (toascii >= 97 && toascii <= 122)) {
-       return 1;
-     } else {
-       return 0;
-     }
+     return ((int)c >= 65 && (int)c <= 90) || ((int)c >= 97 && (int)c <= 122);
    }
 
    /* --------------------------------------------------------------------- */
@@ -271,6 +276,8 @@
 		case MOINS: return "MOINS" ;
 		case MUL: return "MUL" ;
     case DIV: return "DIV" ;
+    case PARO: return "PARO";
+    case PARF: return "PARF";
     case AFF: return "AFF";
     case SEPAFF: return "SEPAFF";
     case IDF: return "IDF";

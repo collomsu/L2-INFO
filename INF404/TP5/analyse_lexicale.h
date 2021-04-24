@@ -26,6 +26,8 @@
       MOINS,            // -
       MUL,              // *
       DIV,              // /
+      PARO,             // (
+      PARF,             // )
       AFF,              // =
       SEPAFF,           // ;
       IDF,              // sequence de lettres
@@ -40,6 +42,11 @@
       char chaine[256];           // chaine de caracteres
       int valeur;          // valeur d'un entier
    } Lexeme ;
+
+   typedef struct {
+     char nom[256];     // nom de la variable
+     int valeur;        // valeur de la variable
+   } Symbole;
 
    void afficher(Lexeme l);
 
