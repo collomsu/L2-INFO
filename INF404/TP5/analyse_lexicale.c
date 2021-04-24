@@ -29,9 +29,10 @@
 
    void ajouter_caractere (char *s, char c);
    Nature_Caractere nature_caractere (char c);
-   int est_separateur(char c ) ;
-   int est_chiffre(char c ) ;
-   int est_symbole(char c ) ;
+   int est_separateur(char c);
+   int est_chiffre(char c);
+   int est_symbole(char c);
+   int est_lettre(char c);
    void reconnaitre_lexeme();
 
    /* --------------------------------------------------------------------- */
@@ -133,6 +134,14 @@
        			  lexeme_en_cours.nature = DIV;
        			  etat = E_FIN;
  			        break;
+            case '=':
+       			  lexeme_en_cours.nature = AFF;
+       			  etat = E_FIN;
+ 			        break;
+            case ';':
+       			  lexeme_en_cours.nature = SEPAFF;
+       			  etat = E_FIN;
+ 			        break;
        		  default:
   						printf("Erreur_Lexicale") ;
   				 		exit(0) ;
@@ -144,11 +153,11 @@
           exit(0) ;
 
         case LETTRE:
-          lexeme_en_cours.nature = ENTIER;
-          lexeme_en_cours.ligne = numero_ligne;
+          lexeme_en_cours.nature = IDF;
+          lexeme_en_cours.ligne = numero_ligne();
           lexeme_en_cours.colonne = numero_colonne();
           ajouter_caractere (lexeme_en_cours.chaine, caractere_courant()) ;
-          etat = E_ENTIER;
+          etat = E_LETTRE;
           avancer_car();
           break;
 		} ;
@@ -205,6 +214,7 @@
 	   if (fin_de_sequence_car(c)) return C_FIN_SEQUENCE;
 	   if (est_chiffre(c)) return CHIFFRE;
 	   if (est_symbole(c)) return SYMBOLE;
+     if (est_lettre(c)) return LETTRE;
 	   return ERREUR_CAR ;
    }
    /* --------------------------------------------------------------------- */
@@ -227,16 +237,28 @@
    int est_symbole(char c)  {
       switch (c) {
         case '+':
-	 	case '-':
-	 	case '*':
-	 	case '/':
-    case '(':
-    case ')':
+    	 	case '-':
+    	 	case '*':
+    	 	case '/':
+        case '=':
+        case ';':
             return 1;
 
         default:
             return 0;
       }
+   }
+
+   /* --------------------------------------------------------------------- */
+
+   // Vrai ssi c designe un caractère correspondant à une lettre de l'alphabet
+   int est_lettre(char c){
+     int toascii = c;
+     if ((toascii >= 65 && toascii <= 90) || (toascii >= 97 && toascii <= 122)) {
+       return 1;
+     } else {
+       return 0;
+     }
    }
 
    /* --------------------------------------------------------------------- */
@@ -249,8 +271,9 @@
 		case MOINS: return "MOINS" ;
 		case MUL: return "MUL" ;
     case DIV: return "DIV" ;
-    case PARO: return "PARO";
-    case PARF: return "PARF";
+    case AFF: return "AFF";
+    case SEPAFF: return "SEPAFF";
+    case IDF: return "IDF";
 		case FIN_SEQUENCE: return "FIN_SEQUENCE" ;
 		default: return "ERREUR" ;
 	} ;
@@ -267,7 +290,7 @@
          default:
             printf("(ligne %d, ", l.ligne);
             printf("colonne %d) : ",l.colonne);
-	    printf("[") ;
+	          printf("[") ;
             printf("nature = %s", Nature_vers_Chaine(l.nature)) ;
             printf(", chaine = %s, ", l.chaine) ;
             switch(l.nature) {

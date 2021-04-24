@@ -32,6 +32,26 @@ float evaluer(float valg, float vald, char op){
   }
 }
 
+double evaluation(Ast expr) {
+	switch (expr->nature) {
+		case VALEUR:
+			return expr->valeur;
+		case OPERATION:
+			switch (expr->operateur) {
+				case N_PLUS:
+					return (double)(evaluation(expr->gauche)+evaluation(expr->droite));
+				case N_MOINS:
+					return (double)(evaluation(expr->gauche)-evaluation(expr->droite));
+				case N_MUL:
+					return (double)(evaluation(expr->gauche)*evaluation(expr->droite));
+				case N_DIV:
+					return (double)(evaluation(expr->gauche)/evaluation(expr->droite));
+			}
+		default:
+			exit(0);
+	}
+}
+
 bool Rec_op(Lexeme *lex, char *op){
   switch (lex->nature) {
     case PLUS:
