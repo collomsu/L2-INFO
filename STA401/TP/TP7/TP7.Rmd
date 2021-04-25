@@ -1,0 +1,92 @@
+---
+title: "TP7"
+output: html_notebook
+---
+
+#Partie 1
+#Exercice 1
+
+#Question 1
+```{r}
+p = 0.3
+n = 500
+x = rbinom(n,1,p)
+```
+
+#Question 2
+```{r}
+moy.taille = cumsum(x)/(1:n)
+plot(moy.taille)
+abline(h = p)
+```
+
+#Question 3
+```{r}
+alpha = 0.05
+u = qnorm(1-alpha/2)
+delta = sqrt(moy.taille*(1-moy.taille))/sqrt(n)
+Binf.taille = moy.taille - delta
+Bsup.taille = moy.taille + delta
+```
+
+#Question 4
+```{r}
+amplitude.taille = 2*delta
+plot(1:n,amplitude.taille, type = "l")
+abline(h = 0.1, col = "cyan")
+```
+
+#Question 5
+```{r}
+prop.test(sum(x), length(x))
+prop.test(sum(x), length(x), conf.level = 0.999)
+r = prop.test(sum(x),length(x))
+```
+
+#Question 6
+```{r}
+ALPHA = seq(0.01,0.30,0.01)
+s_x = sum(x)
+get.Binf.niveau = function(alpha){
+  r = prop.test(s_x,n,conf.level = 1-alpha, correct = F)$conf.inte[1]
+  return(r)
+}
+get.Bsup.niveau = function(alpha){
+  r = prop.test(s_x,n,conf.level = 1-alpha, correct = F)$conf.inte[2]
+  return(r)
+}
+
+Binf.niveau = sapply(ALPHA,get.Binf.niveau)
+Bsup.niveau = sapply(ALPHA,get.Bsup.niveau)
+```
+
+
+###
+```{r}
+mu = 1
+sigma = 2
+n = 1000
+x = rnorm(n,mu,sigma)
+moy.taille = cumsum(x)/(1:n)
+moy2.taille = cumsum(x^2)/(1:n)
+var_emp = moy2.taille - moy.taille^2
+plot(var_emp)
+```
+
+$$
+v_{\text{emp} } = E(x^2) - E(x)^2
+$$
+
+#Exercice 2 Série 6
+```{r}
+p = 0.5
+N = 10000
+n = 5
+rbinom(N*n,1,p)
+M = matrix(x,nrow = N)
+rowMeans(M) -> xbarn
+mean(xbarn) -> mu
+var(xbarn) -> sigma2
+hist(xbarn, probability = T)
+curve(dnorm(x,mu,sqrt(sigma2)), add = T, col = "purple")
+```

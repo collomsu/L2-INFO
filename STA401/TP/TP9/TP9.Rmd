@@ -1,0 +1,138 @@
+---
+title: "TP9"
+output: html_notebook
+---
+
+#Exercice 1
+#Question 1
+```{r}
+setwd("~/GitHub/L2_INFO/STA401/TP/TP9")
+data = read.csv("apnee.csv")
+```
+
+#Question 2
+```{r}
+data[c("age","poids")] # On extrait des colonnes
+data$age # On extrait les données du dataframe
+data[c(1,2,3),] # Extraction de ligne, la virgule est importante !
+data[data$sexe == 0,"tailleH"]
+tailleH = data$taille
+```
+
+#Question 3
+
+```{r}
+mu = mean(tailleH)
+sigma2 = var(tailleH)
+qqnorm(tailleH, main = "Droite de Henry pour tailleH")
+abline(a = mu, b = sqrt(sigma2), col = "red")
+```
+
+#Question 4
+
+$$
+H_0 : \quad \mu = \mu_0 \\
+H_1 : \quad \mu > \mu_0
+$$
+Puisque la taille des hommes est supposé suivre une loi normale de moyenne et variance inconnues (et même si ce n'est pas le cas la taille de l'échantillon permet de ne pas s'en soucier), nous effectuons un test de student.
+```{r}
+mu0 = 178
+alpha = seq(0.01, 1, 0.001)
+n = length(tailleH)
+stat.test = (mu-mu0)/sqrt(sigma2/n) 
+cat("stat.test = ", stat.test,"\n")
+t = qt(1-alpha, n-1)
+plot(alpha, t, xlab = "niveau du risque alpha", ylab = "valeur seuil t")
+abline(h = stat.test, col ="red")
+# La p valeur verifie stat.test = qt1-p_val,n-1)
+#On en déduit que :
+pval = 1-pt(stat.test, n-1)
+abline(v = pval, col = "orange")
+```
+
+#Question 6
+```{r}
+t.test(tailleH, mu = 178, alternative = "greater")
+```
+
+#Exercice 2
+
+Les hypothèses de test sont :
+$$
+H_0 : \quad \sigma^2 = \sigma_0^2 \\
+H_1 ; \quad \sigma^2 \neq \sigma_0^2
+$$
+
+#Question 1
+```{r}
+alpha = seq(0.01, 1, 0.01)
+sigma02 = 200
+stat.test = (n-1)*sigma2/sigma02
+bs = qchisq(1-alpha/2,n-1)
+bi = qchisq(alpha/2,n-1)
+plot(alpha,bs,xlab = "niveau de risque alpha", ylab = "valeur seuil", ylim = c(25,125))
+points(alpha,bi)
+abline(h = stat.test, col = "orange")
+abline(h = p_val, col = "purple")
+```
+
+#Question 2
+```{r}
+# La pvaleur vérifie : pval = qchisq(1-pval/2,n-1) ou bi = qchisq(pval/2,n-1)
+# Nous inversons les deux formules suivantes
+# bs = qchisq(1-alpha/2,n-1)
+# bi = qchisq(alpha/2,n-1)
+ps = 2*(1-pchisq(stat.test,n-1))
+pi = 2*pchisq(stat.test,n-1)
+p_val = min(ps,pi)
+plot(alpha,bs,xlab = "niveau de risque alpha", ylab = "valeur seuil", ylim = c(25,125))
+points(alpha,bi)
+abline(h = stat.test, col = "orange")
+abline(h = p_val, col = "purple")
+```
+
+#Exercice 3
+
+$$
+X_i = \text{taille}[i]>180  \text{ cm}
+$$
+
+$X_i$ suit une loi de Bernouilli de paramètre $p$ inconnu.
+#Question 1 : estimer p
+```{r}
+taille = data$taille
+n = length(taille)
+p = sum(taille > 180)/n
+cat("p = ", p)
+```
+
+#Question 2 : p peut elle être égale à 0.15 ?
+
+Hypothèses de test :
+$$
+H_0 : \quad p
+$$
+
+Nou avons sous $H_0$:
+$$
+E[X_1] = p \text{ donc } \text{var}(X_i) = p(1-p^2)
+$$
+
+$$
+(p-p_0)\sqrt{\frac{n}{p_0(1-p0)}}
+$$
+
+Mais R implémente un test de proportion, utilisons le !
+```{r}
+p0 = 0.15
+prop.test(sum(taille>180),n, p=p0, conf.level = 0.90)
+```
+
+Calculons une pvaleur à la main :
+```{r}
+stat.test(p-p0)*sqrt(n/(p0*(1-p0)))
+ps = 2*(1-pnorm(stat.test))
+pi = 2*pnorm(stat.test)
+pval = min(ps,pi)
+pval
+```

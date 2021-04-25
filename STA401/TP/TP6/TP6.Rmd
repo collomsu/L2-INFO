@@ -1,0 +1,94 @@
+---
+title: "TP 6"
+output: html_notebook
+---
+
+#Question 1
+```{r}
+mu = 3
+sigma = 1
+N = 1000
+n = 10
+x = rnorm(n*N, mu,sigma)
+dataG = matrix(x, nrow=N)
+```
+
+#Question 2
+```{r}
+est1 = rowMeans(dataG)
+min_x = apply(dataG,1,min)
+max_x = apply(dataG,1,max)
+est2 = (min_x+max_x)/2
+T2 = function(x){
+  return( (min(x)+max(x))/2)
+}
+sum( est2 == apply(dataG,1,T2) )
+```
+
+#Question 3
+```{r}
+moy_est1 = mean(est1)
+et_est1 = sd(est1)
+moy_est2 = mean(est2)
+et_est2 = sd(est2)
+cat("moy_est1 = ", moy_est1, " et_est1 =", et_est1, "\n")
+cat("moy_est2 = ", moy_est2, " et_est2 =", et_est2, "\n")
+```
+
+#Question 4
+Les deux estimateurs sont sans biais, mais l'écart type de $T_1$ est plus fiable que celui de $T_2$, le premier estimateur est donc plus précis.
+
+#Question 5
+```{r}
+par(mfrow = c(1,2))
+hist(est1, probability = T, xlim = c(0,5))
+abline(v = mu, col = "red", lw = 2)
+abline(v = moy_est1, col = "green")
+hist(est2, probability = T, xlim = c(0,5))
+abline(v = mu, col = "red", lw = 2)
+abline(v = moy_est2, col = "green", lw = 3)
+```
+
+#Question è
+
+```{r}
+alpha = 0.05 #1-niveau de confiance
+Binf = est1 - sigma * qnorm(1-alpha/2)/sqrt(n)
+Bsup = est1 + sigma * qnorm(1-alpha/2)/sqrt(n)
+mean((Binf <= mu) & (mu <= Bsup))
+```
+
+#Question 8
+```{r}
+plot(Binf, ylim = c(mu-3*sigma, mu+3*sigma))
+points(Bsup)
+segments(x0 = 1:N, y0 = Binf, y1 = Bsup, col = "orange")
+```
+
+#Exercice 2
+
+#Question 1
+```{r}
+mu = 3
+sigma = 1
+N = 1000
+n = 10
+x = rnorm(n*N, mu,sigma)
+dataG = matrix(x, nrow=N)
+```
+
+#Question 2
+```{r}
+est1 = rowSums(dataG/n-rowMeans(dataG))
+est2 = apply(dataG, 1, var)
+```
+
+```{r}
+par(mfrow = c(1,2))
+hist(est1, probability = T, xlim = c(0,5))
+abline(v = sigma, col = "red", lw = 2)
+abline(v = moy_est1*n/(n-1), col = "green", lw = 3, lty = "dashed")
+hist(est2, probability = T, xlim = c(0,5))
+abline(v = sigma, col = "red", lw = 2)
+abline(v = moy_est2, col = "green",  lw = 3, lty = "dashed")
+```

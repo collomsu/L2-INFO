@@ -1,0 +1,62 @@
+---
+title: "TP8"
+output: html_notebook
+---
+
+#Exercice 1
+#Question 1
+```{r}
+mu = 2
+sigma = 1
+N = 1000
+n = 50
+x = rnorm(N*n,mu,sigma)
+dataG = matrix(x, nrow = N)
+x_bar = rowMeans(dataG)
+```
+
+#Question 3
+Une analyse théorique montre que :
+$$
+P(\bar{x}_n > \mu_0 + \beta / \sqrt{n}) = 1 -\phi(\beta/\sigma)
+$$
+Nous en déduisons les valeurs théoriques des risques de type 1 pour les différents tests proposées
+
+```{r}
+risque.theorique.test1 = 1-pnorm(0)
+risque.theorique.test2 = 1-pnorm(2)
+risque.theorique.test3 = 1-pnorm(3)
+cat("risque.theorique.test1", risque.theorique.test1)
+cat("\n risque.theorique.test2", risque.theorique.test2)
+cat("\n risque.theorique.test3", risque.theorique.test3)
+```
+
+Vérifions numériquement
+```{r}
+mu0 = 2
+risque.experimental.test1 = sum(x_bar > mu0)/N
+risque.experimental.test2 = sum(x_bar > mu0+2/sqrt(n))/N
+risque.experimental.test3 = sum(x_bar > mu0+3/sqrt(n))/N
+cat("risque.experimental.test1", risque.experimental.test1)
+cat("\n risque.experimental.test2", risque.experimental.test2)
+cat("\n risque.experimental.test3", risque.experimental.test3)
+```
+
+#Question 4
+Nous proposons une nouvelle régle de la forme :
+$$
+\text{refus de }H_° \text{ si } \bar{x}_n > \mu_0 + \beta/\sqrt{n}
+$$
+
+Pour obtenir un niveau de risque $\alpha$, il faut prendre : 
+$$
+\beta = \sigma \phi^{-1}(1-\alpha)
+$$
+
+```{r}
+alpha = 5E-2
+beta = sigma*qnorm(1-alpha)
+cat("beta = ",beta,"\n")
+risque.experimental.beta = sum(x_bar > mu0+beta/sqrt(n))/N
+cat("rsique.experimental.beta",risque.experimental.beta)
+```
