@@ -44,9 +44,16 @@
    } Lexeme ;
 
    typedef struct {
-     char nom[256];     // nom de la variable
+     char *nom;     // nom de la variable
      int valeur;        // valeur de la variable
    } Symbole;
+
+
+   int verifier_variable(char *nom);
+   void ajouter_variable(char *nom, int val);
+   void modifier_variable(char *nom, int val);
+   int get_valeur_variable(char *nom);
+   void affichage_table_symbole();
 
    void afficher(Lexeme l);
 

@@ -26,6 +26,8 @@
 /* Les variables et fonctions locales au module */
 
    Lexeme lexeme_en_cours ;	/* le lexeme courant */
+   Symbole tableau_symbole[256];
+   int nb_var = 0;
 
    void ajouter_caractere (char *s, char c);
    Nature_Caractere nature_caractere (char c);
@@ -34,6 +36,60 @@
    int est_symbole(char c);
    int est_lettre(char c);
    void reconnaitre_lexeme();
+
+   /* --------------------------------------------------------------------- */
+
+   int verifier_variable(char *nom){
+     int i;
+     for(i = 0; i < nb_var; i++){
+       if(!strcmp(nom,tableau_symbole[i].nom)){
+         return i;
+       }
+     }
+     return -1;
+   }
+
+   /* --------------------------------------------------------------------- */
+
+   void modifier_variable(char *nom, int val){
+     if(verifier_variable(nom) == -1){
+       printf("ERREUR : Modification de variable impossible, aucune variable ne possède ce nom\n");
+     } else {
+       tableau_symbole[verifier_variable(nom)].valeur = val;
+     }
+   }
+
+   /* --------------------------------------------------------------------- */
+
+   void ajouter_variable(char *nom, int val){
+     if(verifier_variable(nom) == -1){
+       tableau_symbole[nb_var].nom = nom;
+       tableau_symbole[nb_var].valeur = val;
+       nb_var++;
+     } else {
+       modifier_variable(nom, val);
+     }
+   }
+
+   /* --------------------------------------------------------------------- */
+
+   int get_valeur_variable(char *nom){
+     if(verifier_variable(nom) == -1){
+       printf("ERREUR : Impossible de récupérer la valeur, aucune variable ne possède ce nom\\n");
+       return 0;
+     } else {
+       return tableau_symbole[verifier_variable(nom)].valeur;
+     }
+   }
+
+   /* --------------------------------------------------------------------- */
+
+   void affichage_table_symbole(){
+     int i;
+     for(i = 0; i < nb_var; i++){
+       printf("Position n°%d : Nom = %s, Valeur = %d\n", i, tableau_symbole[i].nom, tableau_symbole[i].valeur);
+     }
+   }
 
    /* --------------------------------------------------------------------- */
 

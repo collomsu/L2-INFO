@@ -15,9 +15,11 @@ int Op2(TypeOperateur *op);
 
 void rec_aff(Ast *A){
   if(lexeme_courant().nature == IDF){
+    char *nom = lexeme_courant().chaine;
     avancer();
     if (lexeme_courant() == AFF) {
       rec_eag(A);
+      lexeme_en_cours(nom, A->valeur);
       if(lexeme_courant() == SEPAFF){
         avancer();
       } else {
@@ -80,6 +82,7 @@ int Op2(TypeOperateur *op){
 void facteur(Ast *A1){
   switch (lexeme_courant().nature) {
     case IDF:
+      *A1 = creer_valeur(get_valeur_variable(lexeme_courant().chaine));
       avancer();
       break;
     case ENTIER:
