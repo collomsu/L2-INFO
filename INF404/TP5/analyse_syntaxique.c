@@ -20,7 +20,6 @@ void rec_aff(Ast *A){
     A1 = creer_idf(lexeme_courant().chaine);
     avancer();
     int res = Op2(&op);
-    avancer();
     if (res == 3) {
       rec_eag(A);
       A2 = creer_valeur(lexeme_courant().valeur);
@@ -111,6 +110,7 @@ void facteur(Ast *A1){
       }
       break;
     default:
+      printf("%d\n", lexeme_courant().nature);
       printf("ERREUR : Facteur\n");
       exit(0);
   }
@@ -181,7 +181,7 @@ sinon le pgm termine sur un message d'erreur */
 void analyser(char *fichier, Ast *arbre){
   Symbole tableau_symbole[128];
   demarrer(fichier);
-  rec_eag(arbre);
+  rec_aff(arbre);
   if(lexeme_courant().nature != FIN_SEQUENCE){
     printf("ERREUR : Syntaxe incorrect (fin de sequence non atteint)\n");
   }
