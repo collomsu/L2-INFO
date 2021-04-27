@@ -1,17 +1,21 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "type_ast.h"
 #include "ast_parcours.h"
 
 void aff_operateur(TypeOperateur op){
 	switch (op) {
 		case N_PLUS:
-			printf("+") ;
+			printf("+");
 			break;
 		case N_MOINS:
-			printf("-") ;
+			printf("-");
 			break;
 		case N_MUL:
-			printf("*") ;
+			printf("*");
+			break;
+		case N_DIV:
+			printf("/");
 			break;
 	}
 }

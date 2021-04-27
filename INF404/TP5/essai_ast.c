@@ -1,4 +1,4 @@
-#include <stdio.h> 
+#include <stdio.h>
 
 #include "ast_construction.h"
 #include "ast_parcours.h"
@@ -15,7 +15,7 @@ int main() {
 
 
  printf("Arbre abstrait de l'expression\n") ;
- afficher(ast) ; 
+ afficherAst(ast) ; 
  printf("\n\nValeur de l'expression : %d\n", evaluation(ast)) ;
  return 0 ;
 
