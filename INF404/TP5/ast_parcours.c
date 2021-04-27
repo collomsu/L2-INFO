@@ -20,9 +20,9 @@ void afficherAst(Ast expr) {
 	switch (expr->nature) {
                case OPERATION:
                         printf("(");
-                        afficher(expr->gauche);
+                        afficherAst(expr->gauche);
                         aff_operateur(expr->operateur) ;
-                        afficher(expr->droite);
+                        afficherAst(expr->droite);
                         printf(")");
 			break ;
                case VALEUR:
