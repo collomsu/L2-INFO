@@ -1,6 +1,6 @@
-
 #include <stdio.h>
 #include "type_ast.h"
+#include "ast_parcours.h"
 
 void aff_operateur(TypeOperateur op){
 	switch (op) {
@@ -13,10 +13,10 @@ void aff_operateur(TypeOperateur op){
 		case N_MUL:
 			printf("*") ;
 			break;
-	} 
+	}
 }
 
-void afficher(Ast expr) {
+void afficherAst(Ast expr) {
 	switch (expr->nature) {
                case OPERATION:
                         printf("(");
@@ -32,7 +32,21 @@ void afficher(Ast expr) {
 }
 
 int evaluation(Ast expr) {
-      // A COMPLETER !
-      return -1 ;
+	switch (expr->nature) {
+		case VALEUR:
+			return expr->valeur;
+		case OPERATION:
+			switch (expr->operateur) {
+				case N_PLUS:
+					return (double)(evaluation(expr->gauche)+evaluation(expr->droite));
+				case N_MOINS:
+					return (double)(evaluation(expr->gauche)-evaluation(expr->droite));
+				case N_MUL:
+					return (double)(evaluation(expr->gauche)*evaluation(expr->droite));
+				case N_DIV:
+					return (double)(evaluation(expr->gauche)/evaluation(expr->droite));
+			}
+		default:
+			exit(0);
+	}
 }
-
