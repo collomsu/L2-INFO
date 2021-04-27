@@ -16,21 +16,28 @@ void aff_operateur(TypeOperateur op){
 		case N_DIV:
 			printf("/");
 			break;
+		case N_AFF:
+			printf("=");
+			break;
 	}
 }
 
 void afficherAst(Ast expr) {
 	switch (expr->nature) {
-               case OPERATION:
-                        printf("(");
-                        afficherAst(expr->gauche);
-                        aff_operateur(expr->operateur) ;
-                        afficherAst(expr->droite);
-                        printf(")");
+		case OPERATION:
+			printf("(");
+			afficherAst(expr->gauche);
+			aff_operateur(expr->operateur) ;
+			afficherAst(expr->droite);
+			printf(")");
 			break ;
-               case VALEUR:
-                  	printf("%d", expr->valeur);
+		case VALEUR:
+	  	printf("%d", expr->valeur);
 			break ;
+		case VARIABLE_IDF:
+			printf("%s", expr->nom_idf);
+			break;
+
 	}
 }
 

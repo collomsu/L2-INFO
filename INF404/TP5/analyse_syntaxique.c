@@ -14,12 +14,17 @@ int Op1(TypeOperateur *op);
 int Op2(TypeOperateur *op);
 
 void rec_aff(Ast *A){
+  Ast A1, A2;
+  TypeOperateur op;
   if(lexeme_courant().nature == IDF){
-    char *nom = lexeme_courant().chaine;
+    A1 = creer_idf(lexeme_courant().chaine);
     avancer();
-    if (lexeme_courant().nature == AFF) {
+    int res = Op2(&op);
+    avancer();
+    if (res == 3) {
       rec_eag(A);
-      *A = creer_operation(N_AFF,nom,lexeme_courant().valeur);
+      A2 = creer_valeur(lexeme_courant().valeur);
+      *A = creer_operation(op,A1,A2);
       if(lexeme_courant().nature == SEPAFF){
         avancer();
       } else {
@@ -46,6 +51,8 @@ TypeOperateur Operateur(Nature_Lexeme n){
       return N_MUL;
     case DIV:
       return N_DIV;
+    case AFF:
+      return N_AFF;
     default:
       printf("ERREUR : Operateur incorrect\n");
       exit(0);
@@ -74,6 +81,10 @@ int Op2(TypeOperateur *op){
       *op = Operateur(lexeme_courant().nature);
       avancer();
       return 2;
+    case AFF:
+      *op = Operateur(lexeme_courant().nature);
+      avancer();
+      return 3;
     default:
       return 0;
   }
@@ -82,7 +93,7 @@ int Op2(TypeOperateur *op){
 void facteur(Ast *A1){
   switch (lexeme_courant().nature) {
     case IDF:
-      *A1 = creer_valeur(get_valeur_variable(lexeme_courant().chaine));
+      *A1 = creer_idf(lexeme_courant().chaine);
       avancer();
       break;
     case ENTIER:
