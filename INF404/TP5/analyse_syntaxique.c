@@ -17,10 +17,10 @@ void rec_aff(Ast *A){
   if(lexeme_courant().nature == IDF){
     char *nom = lexeme_courant().chaine;
     avancer();
-    if (lexeme_courant() == AFF) {
+    if (lexeme_courant().nature == AFF) {
       rec_eag(A);
-      lexeme_en_cours(nom, A->valeur);
-      if(lexeme_courant() == SEPAFF){
+      lexeme_courant(nom, A->valeur);
+      if(lexeme_courant().nature == SEPAFF){
         avancer();
       } else {
         printf("ERREUR : SEPAFF attendu non trouvé\n");

@@ -1,7 +1,7 @@
 #ifndef ANALYSE_SYNTAXIQUE_H
 #define ANALYSE_SYNTAXIQUE_H
 
-void analyser(char *fichier, float *resultat);
+void analyser(char *fichier, Ast *arbre);
 /* etat initial : indifferent
 etat final : une EAEP a ete lue dans le nom_fichier
 si elle ne contient pas d'erreur de syntaxe un message est affiche
