@@ -1,6 +1,8 @@
 #ifndef ANALYSE_SYNTAXIQUE_H
 #define ANALYSE_SYNTAXIQUE_H
 
+#include "type_ast.h"
+
 void analyser(char *fichier, Ast *arbre);
 /* etat initial : indifferent
 etat final : une EAEP a ete lue dans le nom_fichier
