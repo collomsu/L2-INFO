@@ -19,7 +19,7 @@ void rec_aff(Ast *A){
     avancer();
     if (lexeme_courant().nature == AFF) {
       rec_eag(A);
-      ajouter_variable(nom,lexeme_courant().valeur);
+      *A = creer_operation(N_AFF,nom,lexeme_courant().valeur);
       if(lexeme_courant().nature == SEPAFF){
         avancer();
       } else {
