@@ -15,8 +15,8 @@ int main() {
 
 
  printf("Arbre abstrait de l'expression\n") ;
- afficherAst(ast) ; 
- printf("\n\nValeur de l'expression : %d\n", evaluation(ast)) ;
+ afficherAst(ast) ;
+ printf("\n\nValeur de l'expression : %f\n", evaluation(ast)) ;
  return 0 ;
 
 }

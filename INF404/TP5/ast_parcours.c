@@ -41,7 +41,7 @@ void afficherAst(Ast expr) {
 	}
 }
 
-int evaluation(Ast expr) {
+double evaluation(Ast expr) {
 	switch (expr->nature) {
 		case VALEUR:
 			return expr->valeur;
@@ -55,6 +55,8 @@ int evaluation(Ast expr) {
 					return (double)(evaluation(expr->gauche)*evaluation(expr->droite));
 				case N_DIV:
 					return (double)(evaluation(expr->gauche)/evaluation(expr->droite));
+				case N_AFF:
+					return (double)(evaluation(expr->droite));
 			}
 		default:
 			exit(0);
