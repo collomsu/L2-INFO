@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ast_parcours.h"
+#include "analyse_lexicale.h"
 
 void aff_operateur(TypeOperateur op){
 	switch (op) {
@@ -42,6 +43,7 @@ void afficherAst(Ast expr) {
 }
 
 double evaluation(Ast expr) {
+	double res;
 	switch (expr->nature) {
 		case VALEUR:
 			return expr->valeur;
@@ -56,7 +58,9 @@ double evaluation(Ast expr) {
 				case N_DIV:
 					return (double)(evaluation(expr->gauche)/evaluation(expr->droite));
 				case N_AFF:
-					return (double)(evaluation(expr->droite));
+					res = (double)(evaluation(expr->droite));
+					ajouter_variable(expr->gauche->nom_idf, res);
+					return res;
 			}
 		default:
 			exit(0);

@@ -5,6 +5,7 @@
 
 #include "analyse_syntaxique.h"
 #include "ast_parcours.h"
+#include "analyse_lexicale.h"
 
 int main (int argc, char *argv[]) {
   if (argc == 2) {
@@ -15,6 +16,7 @@ int main (int argc, char *argv[]) {
     printf("\n");
     double res = evaluation(arbre);
     printf("\nLe resultat du calcul est = %f\n", res);
+    affichage_table_symbole();
   } else {
     printf("Il faut donner un nom de fichier en argument !\n");
     return 1;

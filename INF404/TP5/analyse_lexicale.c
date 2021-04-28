@@ -51,7 +51,7 @@
 
    /* --------------------------------------------------------------------- */
 
-   void modifier_variable(char *nom, int val){
+   void modifier_variable(char *nom, double val){
      if(verifier_variable(nom) == -1){
        printf("ERREUR : Modification de variable impossible, aucune variable ne possède ce nom\n");
      } else {
@@ -61,7 +61,7 @@
 
    /* --------------------------------------------------------------------- */
 
-   void ajouter_variable(char *nom, int val){
+   void ajouter_variable(char *nom, double val){
      if(verifier_variable(nom) == -1){
        tableau_symbole[nb_var].nom = nom;
        tableau_symbole[nb_var].valeur = val;
@@ -87,7 +87,7 @@
    void affichage_table_symbole(){
      int i;
      for(i = 0; i < nb_var; i++){
-       printf("Position n°%d : Nom = %s, Valeur = %d\n", i, tableau_symbole[i].nom, tableau_symbole[i].valeur);
+       printf("Position n°%d : Nom = %s, Valeur = %f\n", i, tableau_symbole[i].nom, tableau_symbole[i].valeur);
      }
    }
 
