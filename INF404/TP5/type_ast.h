@@ -3,7 +3,7 @@
 #define __TYPE_AST__
 
 typedef enum {OPERATION, VALEUR, VARIABLE_IDF} TypeAst ;
-typedef enum {N_PLUS, N_MUL, N_MOINS, N_DIV, N_AFF} TypeOperateur ;
+typedef enum {N_PLUS, N_MUL, N_MOINS, N_DIV, N_AFF, N_ROWS} TypeOperateur ;
 
 typedef struct noeud {
 	TypeAst nature ;

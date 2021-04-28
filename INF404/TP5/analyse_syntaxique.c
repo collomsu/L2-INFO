@@ -13,7 +13,7 @@ void rec_eag(Ast *A);
 int Op1(TypeOperateur *op);
 int Op2(TypeOperateur *op);
 
-void rec_aff(Ast *A){
+void affectation(Ast *A){
   Ast A1;
   TypeOperateur op;
   if(lexeme_courant().nature == IDF){
@@ -36,6 +36,26 @@ void rec_aff(Ast *A){
   } else {
     printf("ERREUR : IDF attendu non trouvé\n");
     exit(0);
+  }
+}
+
+void seq_aff(Ast *A){
+  Ast A1, A2;
+  TypeOperateur op = N_ROWS;
+  switch (lexeme_courant().nature) {
+    case IDF:
+      affectation(&A1);
+      if(lexeme_courant().nature != SEPAFF){
+      seq_aff(&A2);
+      *A = creer_operation(op,A1,A2);
+      } else {
+        *A = A1;
+        avancer();
+      }
+      break;
+    default:
+      printf("ERREUR  : %d\n",lexeme_courant().nature);
+      break;
   }
 }
 
@@ -178,9 +198,8 @@ et la valeur de cette expression est fournie dans le parametre resultat
 sinon le pgm termine sur un message d'erreur */
 
 void analyser(char *fichier, Ast *arbre){
-  Symbole tableau_symbole[128];
   demarrer(fichier);
-  rec_aff(arbre);
+  seq_aff(arbre);
   if(lexeme_courant().nature != FIN_SEQUENCE){
     printf("ERREUR : Syntaxe incorrect (fin de sequence non atteint)\n");
   }

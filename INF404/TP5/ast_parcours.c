@@ -20,6 +20,9 @@ void aff_operateur(TypeOperateur op){
 		case N_AFF:
 			printf("=");
 			break;
+		case N_ROWS:
+			printf("\n");
+			break;
 	}
 }
 
@@ -61,6 +64,10 @@ double evaluation(Ast expr) {
 					res = (double)(evaluation(expr->droite));
 					ajouter_variable(expr->gauche->nom_idf, res);
 					return res;
+				case N_ROWS:
+					evaluation(expr->gauche);
+					evaluation(expr->droite);
+					return -2;
 			}
 		default:
 			exit(0);
