@@ -12,6 +12,7 @@ int main (int argc, char *argv[]) {
     analyser(argv[1], &arbre);
     printf("Ast produit : ");
     afficherAst(arbre);
+    printf("\n");
     //double res = evaluation(arbre);
     //printf("\nLe resultat du calcul est = %f\n", res);
   } else {

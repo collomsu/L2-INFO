@@ -14,7 +14,7 @@ int Op1(TypeOperateur *op);
 int Op2(TypeOperateur *op);
 
 void rec_aff(Ast *A){
-  Ast A1, A2;
+  Ast A1;
   TypeOperateur op;
   if(lexeme_courant().nature == IDF){
     A1 = creer_idf(lexeme_courant().chaine);
@@ -22,8 +22,7 @@ void rec_aff(Ast *A){
     int res = Op2(&op);
     if (res == 3) {
       rec_eag(A);
-      A2 = creer_valeur(lexeme_courant().valeur);
-      *A = creer_operation(op,A1,A2);
+      *A = creer_operation(op,A1,*A);
       if(lexeme_courant().nature == SEPAFF){
         avancer();
       } else {
