@@ -1,3 +1,0 @@
-toto = 4 + 2;
-y = toto + 3;
-ab = 4 + 6 + y + toto;

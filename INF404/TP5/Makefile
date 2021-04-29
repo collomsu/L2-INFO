@@ -1,15 +1,12 @@
 CC=gcc -g -Wall
 
-all: test_lexeme interpreteur
+all: interpreteur
 
 interpreteur: interpreteur.o analyse_syntaxique.o ast_parcours.o ast_construction.o analyse_lexicale.o lecture_caracteres.o table_symbole.o
 	$(CC) -o interpreteur interpreteur.o analyse_syntaxique.o ast_parcours.o ast_construction.o analyse_lexicale.o lecture_caracteres.o table_symbole.o
 
 essai_ast: ast_construction.o  ast_parcours.o  essai_ast.o
 	$(CC) -o essai_ast ast_construction.o  ast_parcours.o  essai_ast.o
-
-test_lexeme: analyse_lexicale.o  lecture_caracteres.o  test_lexeme.o
-	$(CC) -o test_lexeme analyse_lexicale.o  lecture_caracteres.o  test_lexeme.o
 
 analyse_syntaxique.o: analyse_syntaxique.c
 	$(CC) -c analyse_syntaxique.c

@@ -26,8 +26,6 @@
 /* Les variables et fonctions locales au module */
 
    Lexeme lexeme_en_cours ;	/* le lexeme courant */
-   Symbole tableau_symbole[256];
-   int nb_var = 0;
 
    void ajouter_caractere (char *s, char c);
    Nature_Caractere nature_caractere (char c);
@@ -153,13 +151,13 @@
        			  etat = E_FIN;
  			        break;
        		  default:
-  						printf("Erreur_Lexicale") ;
+  						printf("ERREUR Lexicale : \"%c\" n'est pas connu par le lexeme\n", caractere_courant()) ;
   				 		exit(0) ;
 				 	} ;
 		   		avancer_car() ;
 					break ;
         default:
-          printf("Erreur_Lexicale\n") ;
+          printf("ERREUR Lexicale : \"%c\" n'est pas connu par le lexeme\n", caractere_courant()) ;
           exit(0) ;
 
         case LETTRE:

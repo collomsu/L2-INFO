@@ -26,15 +26,15 @@ void affectation(Ast *A){
       if(lexeme_courant().nature == SEPAFF){
         avancer();
       } else {
-        printf("ERREUR : SEPAFF attendu non trouvé\n");
+        printf("ERREUR Syntaxique: SEPAFF attendu non trouvé\n");
         exit(0);
       }
     } else {
-      printf("ERREUR : AFF attendu non trouvé\n");
+      printf("ERREUR Syntaxique : AFF attendu non trouvé\n");
       exit(0);
     }
   } else {
-    printf("ERREUR : IDF attendu non trouvé\n");
+    printf("ERREUR Syntaxique : IDF attendu non trouvé\n");
     exit(0);
   }
 }
@@ -67,7 +67,7 @@ TypeOperateur Operateur(Nature_Lexeme n){
     case AFF:
       return N_AFF;
     default:
-      printf("ERREUR : Operateur incorrect\n");
+      printf("ERREUR Syntaxique : Operateur incorrect\n");
       exit(0);
   }
 }
@@ -119,13 +119,13 @@ void facteur(Ast *A1){
       if(lexeme_courant().nature == PARF){
         avancer();
       } else {
-        printf("ERREUR : EAG incorrect (PARF manquante)\n");
+        printf("ERREUR Syntaxique : EAG incorrect (PARF manquante)\n");
         exit(0);
       }
       break;
     default:
       printf("%d\n", lexeme_courant().nature);
-      printf("ERREUR : Facteur\n");
+      printf("ERREUR Syntaxique : Facteur\n");
       exit(0);
   }
 }
@@ -142,7 +142,7 @@ void suite_seq_facteur(Ast A1, Ast *A2){
       break;
     case 2:
       if(lexeme_courant().valeur == 0){
-        printf("ERREUR : Division par 0 impossible\n");
+        printf("ERREUR Syntaxique : Division par 0 impossible\n");
         exit(0);
       }
       facteur(&A3);
@@ -196,6 +196,6 @@ void analyser(char *fichier, Ast *arbre){
   demarrer(fichier);
   seq_aff(arbre);
   if(lexeme_courant().nature != FIN_SEQUENCE){
-    printf("ERREUR : Syntaxe incorrect (fin de sequence non atteint)\n");
+    printf("ERREUR Syntaxique : Syntaxe incorrect (fin de sequence non atteint)\n");
   }
 }
