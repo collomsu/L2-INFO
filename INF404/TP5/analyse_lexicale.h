@@ -43,18 +43,6 @@
       int valeur;          // valeur d'un entier
    } Lexeme ;
 
-   typedef struct {
-     char *nom;     // nom de la variable
-     double valeur;        // valeur de la variable
-   } Symbole;
-
-
-   int verifier_variable(char *nom);
-   void ajouter_variable(char *nom, double val);
-   void modifier_variable(char *nom, double val);
-   int get_valeur_variable(char *nom);
-   void affichage_table_symbole();
-
    void afficher(Lexeme l);
 
    void demarrer(char *nom_fichier);
