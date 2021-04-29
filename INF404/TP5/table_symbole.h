@@ -35,6 +35,6 @@ extern void insererTS(char *idf, double val);
 // sinon
 //      ajoute le couple (idf,val) dans la TS
 
-extern double getSymbole(char *idf);
+extern double getValeur(char *idf); // retourne la valeur du symbole de nom idf
 
 #endif

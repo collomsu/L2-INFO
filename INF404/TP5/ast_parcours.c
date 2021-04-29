@@ -29,14 +29,6 @@ void aff_operateur(TypeOperateur op){
 }
 
 void afficherAst(Ast expr) {
-	test++;
-	printf("\nnb tour : %d\n", test);
-	printf("nature : %d\n", expr->nature);
-
-	if(expr->nom_idf != NULL){
-		printf("nom : %s\n", expr->nom_idf);
-	}
-	printf("\n");
 	switch (expr->nature) {
 		case OPERATION:
 			printf("(");
@@ -60,6 +52,8 @@ double evaluation(Ast expr) {
 	switch (expr->nature) {
 		case VALEUR:
 			return expr->valeur;
+		case VARIABLE_IDF:
+			return getValeur(expr->nom_idf);
 		case OPERATION:
 			switch (expr->operateur) {
 				case N_PLUS:

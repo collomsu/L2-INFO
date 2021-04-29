@@ -8,7 +8,7 @@ typedef enum {N_PLUS, N_MUL, N_MOINS, N_DIV, N_AFF, N_ROWS} TypeOperateur ;
 typedef struct noeud {
 	TypeAst nature ;
 	TypeOperateur operateur ;
-	char *nom_idf;
+	char nom_idf[20];
 	struct noeud *gauche, *droite ;
       	int valeur ;
 } NoeudAst ;

@@ -13,9 +13,11 @@ extern void initTable(){
 
 extern void afficheTS(){
   int i;
+  printf("\n ________________________________________________\n            [AFFICHAGE DES VARIABLES]           \n\n");
   for(i = 0; i < NbSymbole; i++){
-    printf("Position n°%d : Nom = %s, Valeur = %f\n", i, Table_Symbole[i].nom, Table_Symbole[i].valeur);
+    printf(" Position n°%d : Nom = %s, Valeur = %f\n", i, Table_Symbole[i].nom, Table_Symbole[i].valeur);
   }
+  printf(" ________________________________________________\n");
 }
 /* --------------------------------------------------------------------- */
 

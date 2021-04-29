@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "type_ast.h"
 
@@ -31,6 +32,6 @@ Ast creer_idf(char* chaine){
   Ast expr;
   expr = (Ast) malloc(sizeof(NoeudAst));
   expr->nature = VARIABLE_IDF;
-  expr->nom_idf = chaine;
+  strcpy(expr->nom_idf,chaine);
   return expr;
 }

@@ -14,11 +14,10 @@ int main (int argc, char *argv[]) {
     printf("Ast produit : ");
     afficherAst(arbre);
     printf("\n");
-    double res = evaluation(arbre);
-    printf("\nLe resultat du calcul est = %f\n", res);
+    evaluation(arbre);
     afficheTS();
   } else {
-    printf("Il faut donner un nom de fichier en argument !\n");
+    printf("Il faut donner un seul nom de fichier en argument !\n");
     return 1;
   }
   return 0;

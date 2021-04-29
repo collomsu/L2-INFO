@@ -40,15 +40,15 @@ void affectation(Ast *A){
 }
 
 void seq_aff(Ast *A){
-  Ast A1, A2;
+  Ast A2, A3;
   TypeOperateur op = N_ROWS;
   if(lexeme_courant().nature == IDF) {
-    affectation(&A1);
+    affectation(&A2);
     if(lexeme_courant().nature != FIN_SEQUENCE){
-    seq_aff(&A2);
-    *A = creer_operation(op,A1,A2);
+    seq_aff(&A3);
+    *A = creer_operation(op,A2,A3);
     } else {
-      *A = A1;
+      *A = A2;
       avancer();
     }
   }
