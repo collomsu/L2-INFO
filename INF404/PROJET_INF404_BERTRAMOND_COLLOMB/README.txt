@@ -1,6 +1,6 @@
                   ### COMPILATION ###
 
-Pour compiler le projet lancer simplement la commande :
+Pour compiler le projet lancez simplement la commande :
   $ make
 
 Cette commande requiert le compilateur gcc,
@@ -11,7 +11,7 @@ vous pouvez l'installer via un terminal bash avec la commande :
 
                   ### EXECUTION ###
 
-Le programme requiert un ficheir en entree,
+Le programme requiert un fichier en entree,
 ils sont disponibles dans le dossier Fichiers_entrees
 
 Commande pour l'execution :
@@ -24,6 +24,6 @@ Exemple d'execution avec le fichier d'entrée entree_double.txt :
 
                   ### NETTOYAGE ###
 
-Pour supprimer les fichiers executables et avec comme extension .o,
+Permet de supprimer les fichiers executables et ceux avec comme extension .o,
 il faut executer la commande suivante :
   $ make clean

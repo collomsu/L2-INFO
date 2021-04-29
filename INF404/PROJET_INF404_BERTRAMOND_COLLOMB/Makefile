@@ -33,4 +33,4 @@ interpreteur.o: interpreteur.c
 	$(CC) -c interpreteur.c
 
 clean:
-	rm -f test_lexeme essai_ast *.o
+	rm -f interpreteur *.o
