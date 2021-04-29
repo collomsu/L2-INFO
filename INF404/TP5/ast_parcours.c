@@ -3,6 +3,8 @@
 #include "ast_parcours.h"
 #include "table_symbole.h"
 
+int test = 0;
+
 void aff_operateur(TypeOperateur op){
 	switch (op) {
 		case N_PLUS:
@@ -27,6 +29,14 @@ void aff_operateur(TypeOperateur op){
 }
 
 void afficherAst(Ast expr) {
+	test++;
+	printf("\nnb tour : %d\n", test);
+	printf("nature : %d\n", expr->nature);
+
+	if(expr->nom_idf != NULL){
+		printf("nom : %s\n", expr->nom_idf);
+	}
+	printf("\n");
 	switch (expr->nature) {
 		case OPERATION:
 			printf("(");
