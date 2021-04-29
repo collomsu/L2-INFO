@@ -18,6 +18,7 @@ void affectation(Ast *A){
   TypeOperateur op;
   if(lexeme_courant().nature == IDF){
     A1 = creer_idf(lexeme_courant().chaine);
+    afficherAst(A1);
     avancer();
     int res = Op2(&op);
     if (res == 3) {
@@ -42,20 +43,19 @@ void affectation(Ast *A){
 void seq_aff(Ast *A){
   Ast A1, A2;
   TypeOperateur op = N_ROWS;
-  switch (lexeme_courant().nature) {
-    case IDF:
-      affectation(&A1);
-      if(lexeme_courant().nature != SEPAFF){
-      seq_aff(&A2);
-      *A = creer_operation(op,A1,A2);
-      } else {
-        *A = A1;
-        avancer();
-      }
-      break;
-    default:
-      printf("ERREUR  : %d\n",lexeme_courant().nature);
-      break;
+  if(lexeme_courant().nature == IDF) {
+    printf("lala\n");
+    affectation(&A1);
+    printf("%d\n", A1);
+    if(lexeme_courant().nature != FIN_SEQUENCE){
+    seq_aff(&A2);
+    printf("%d\n", A2);
+    *A = creer_operation(op,A1,A2);
+    } else {
+      printf("oui\n");
+      *A = A1;
+      avancer();
+    }
   }
 }
 
