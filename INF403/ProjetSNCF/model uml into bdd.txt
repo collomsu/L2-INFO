@@ -1,0 +1,6 @@
+Gare (nom, ville)
+Ligne (numero, nom, gare_depart, gare_arrivee, \distanceTotal vue)
+Etape(nom,ligne,horaire)
+Trajet(gare depart,gare arrivée, distance)
+Billet(numéro, ligne ,gare départ, gare arrivée, \prix vue)
+
