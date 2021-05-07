@@ -59,14 +59,16 @@ q) Retour au menu principal
         elif choice == "4":
             req = input("\nRequête SQL : ")
             print("Résultat de la requête : ")
-            cur = conn.cursor()
-            cur.execute(req)
+            run_select(conn,req)
 
-            rows = cur.fetchall()
+def run_select(conn,req):
+    cur = conn.cursor()
+    cur.execute(req)
 
-            for row in rows:
-                print(row)
+    rows = cur.fetchall()
 
+    for row in rows:
+        print(row)
 
 def select_toutes_les_gares(conn):
     """
