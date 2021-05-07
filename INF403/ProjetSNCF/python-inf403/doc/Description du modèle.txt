@@ -1,0 +1,41 @@
+Les gares : Une gare se situe dans uen ville et est un point de passage nécessaire pour se déplacer de ville en ville.
+
+Les lignes : Elle possèe un nom et un numéro pour l'identifier. Elle possède une gare de départ et de fin ainsi que des gares entre sa gare d'arrivée et de fin.
+
+Les étapes: Ce sont des gares se situant sur une ligne de train avec un horaire de passage précis du train journalier.
+
+Les trajets : Un trajet permet de connaître la distance (en km) entre deux gares.
+
+Les billets : Ils permettent de répertorier tout les déplacements sur les lignes de train des consommateurs.
+
+
+Gare (nom_gare, ville_gare)
+Ligne (numero_ligne, nom_ligne, gare_depart_ligne, gare_arrivee_ligne, /distanceTotal)
+Etape(nom_gare, numero_ligne, horaire_passage_etape)
+Trajet(gare depart,gare_depart_trajet, gare_arrivee_trajet, distance)
+Billet(numero_billet, numero_ligne ,gare_depart_trajet, gare_arrivee_trajet, /prix)
+
+
+
+Lignes[gare_depart_ligne] ⊆ Gares[nom_gare]
+
+Lignes[gare_arrivee_ligne] ⊆ Gares[nom_gare]
+
+Etapes[nom_gare] ⊆ Gares[nom_gare]
+
+Etapes[numero_ligne] ⊆ Lignes[numero_ligne]
+
+Trajets[gare_depart_trajet] ⊆ GareEtapes[nom_gare]
+
+Trajets[gare_arrivee_trajet] ⊆ GareEtapes[nom_gare]
+
+Billets[numero_ligne, gare_depart_trajet] ⊆ Etapes[numero_ligne, nom_gare]
+
+Billets[numero_ligne, gare_arrivee_trajet] ⊆ Etapes[numero_ligne, nom_gare]
+
+
+Nom classe au singulier -> Nom table au pluriel
+
+CamelCase -> Snake_case
+
+num -> num_nomclasse

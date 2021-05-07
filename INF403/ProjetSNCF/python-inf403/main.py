@@ -1,14 +1,6 @@
 #!/usr/bin/python3
 
-from utils import db
-from utils import interface
-import hashlib
-
-def encrypt_string(hash_string):
-    return hashlib.sha256(hash_string.encode()).hexdigest()
-
-def clear():
-    print("\n"*100)
+from utils import db, interface
 
 def main():
     # Nom de la BD à créer
@@ -28,9 +20,10 @@ def main():
 
     # Menu intéractif
     while True:
-        print("""Menu principal :
-1) Affiche toutes les gares
-2) Affiche toutes les gares d'une ligne donnée
+        print("""\nMenu principal :
+1) Menu des requêtes de selection-projection
+2) Menu des requêtes d'operateurs ensemblistes
+3) Menu des requêtes de jointure-aggrégation
 a) Mode ADMIN
 q) Quitter""")
 
@@ -40,12 +33,13 @@ q) Quitter""")
             break
         elif choice == "a":
             mdp = input("\nMot de passe ADMIN : ")
-            interface_admin(conn,mdp)
+            interface.interface_admin(conn,mdp)
         elif choice == "1":
-            select_gare_all(conn)
+            interface.interface_selection(conn)
         elif choice == "2":
-            num = int(input("\nNuméro de la ligne : "))
-            select_gares_ligne_donnee(conn,num)
+            interface.interface_operateur_ensembliste(conn)
+        elif choice == "3":
+            interface.interface_jointure(conn)
 
 if __name__ == "__main__":
     main()

@@ -1,1 +1,0 @@
-SELECT * FROM vue_billets;
