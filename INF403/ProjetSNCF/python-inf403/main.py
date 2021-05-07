@@ -62,17 +62,20 @@ q) Retour au menu principal
         elif choice == "4":
             try:
                 req = input("\nRequête SQL : ")
-
-                cur = conn.cursor()
-                cur.execute(req)
                 print("Résultat de la requête : ")
-                rows = cur.fetchall()
-
-                for row in rows:
-                    print(row)
+                run_select(conn,req)
             except Exception:
                 print("\n/!\ ERREUR : Requête incorrect")
 
+
+def run_select(conn,req):
+    cur = conn.cursor()
+    cur.execute(req)
+
+    rows = cur.fetchall()
+
+    for row in rows:
+        print(row)
 
 def select_toutes_les_gares(conn):
     """
