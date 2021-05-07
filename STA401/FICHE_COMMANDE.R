@@ -84,7 +84,28 @@ table(mtcars$am)
 #Partitionner la fenêtre graphique
 par(mfrow=c(1,2))
 
+#regardons si diff suit une loi normale: nous traçons un QQplot et une droite dee Henry
+setwd("~/L2 INFO/S4/STA401/TP10")
+data = read.table("her.txt", header = T, sep = "\t")
+sys = data$sys
+dia = data$dia
+diff = sys - dia
+
+qqnorm(diff)
+abline(mean(diff),sd(diff), col = "red")
+
 #---------------STATISTIQUES----------------
+
+#Calulons l'intervalle de confiance de niveau 95% pur la moyenne de diff
+t.test(diff, conf.level = 0.95) 
+#ou
+t.test(sys, dia, paired = T, conf.level = 0.95)
+
+#Estimation sans biais sur loi normale de moyenne µ et de la variance ??^2
+mu = mean(tailleH)
+sigma2 = var(tailleH)
+qqnorm(tailleH, main = "Droite de Henry pour tailleH")
+abline(a = mu, b = sqrt(sigma2), col = "red")
 
 #Calcul de la moyenne et la variance sur un jeu de données
 cyl <- mtcars$cyl

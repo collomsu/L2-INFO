@@ -44,28 +44,34 @@ q) Retour au menu principal
             clear()
             break
         elif choice == "1":
-            db.mise_a_jour_bd(conn, "data/sncf_create.sql")
-            db.mise_a_jour_bd(conn, "data/sncf_insert_ok.sql")
+            try:
+                db.mise_a_jour_bd(conn, "data/sncf_create.sql")
+                db.mise_a_jour_bd(conn, "data/sncf_insert_ok.sql")
+            except Exception:
+                print("/!\ ERREUR : Reconstruction impossible")
         elif choice == "2":
-            nameCreate = input("\nNom du fichier de création des tables SQL (avec extension) : ")
+                nameCreate = input("\nNom du fichier de création des tables SQL (avec extension) : ")
 
-            db.mise_a_jour_bd(conn,"data/"+nameCreate)
+                db.mise_a_jour_bd(conn,"data/"+nameCreate)
 
-            nameInsert = input("\nNom du fichier d'insertion des données SQL (avec extension) : ")
-            db.mise_a_jour_bd(conn,"data/"+nameInsert)
+                nameInsert = input("\nNom du fichier d'insertion des données SQL (avec extension) : ")
+                db.mise_a_jour_bd(conn,"data/"+nameInsert)
         elif choice == "3":
             nameFile = input("Nom du fichier SQL (avec extension) : ")
             db.mise_a_jour_bd(conn,"data/"+nameFile)
         elif choice == "4":
-            req = input("\nRequête SQL : ")
-            print("Résultat de la requête : ")
-            cur = conn.cursor()
-            cur.execute(req)
+            try:
+                req = input("\nRequête SQL : ")
 
-            rows = cur.fetchall()
+                cur = conn.cursor()
+                cur.execute(req)
+                print("Résultat de la requête : ")
+                rows = cur.fetchall()
 
-            for row in rows:
-                print(row)
+                for row in rows:
+                    print(row)
+            except Exception:
+                print("\n/!\ ERREUR : Requête incorrect")
 
 
 def select_toutes_les_gares(conn):

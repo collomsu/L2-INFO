@@ -1,6 +1,7 @@
 #Chargement des donnÈes et affectation ‡ un data.frame appelÈnotes
 ###################################################################
-read.table("DonneesEvalTP2021.csv",header=T,sep="\t",dec=",")->notes
+setwd("~/GitHub/L2_INFO/STA401/TP/TP NOTE")
+read.table("DonneesEvalTP2021.txt",header=T,sep="\t",dec=",")->notes
 head(notes)
 summary(notes) 
 
@@ -24,7 +25,7 @@ sd(notes[notes$GTP == 1,"partiel"])
 ############################################################################################
 
 notes$Sexe #echantillon des sexes pour tous les etudiants du fichier ou
-notes[,12]
+length(notes[,12])
 notes$Sexe[notes$Sexe==1] #echantillon des sexes pour les gar√ßons on peut aussi executer
 notes[notes$Sexe==1,12]
 length(notes$Sexe[notes$Sexe==1]) #nombre de gar√ßons parmi les 60 etudiants
@@ -49,6 +50,4 @@ sum(x)/length(x) # estimation de p
 notes$quizz[notes$GTP == 1 |notes$GTP == 3 ]
 #ou 
 notes[notes$GTP == 1 |notes$GTP == 3,"quizz"]
-
-
 
